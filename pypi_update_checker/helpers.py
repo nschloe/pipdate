@@ -82,49 +82,74 @@ def check(name, installed_version, semantic_versioning=True):
     return
 
 
-def _check(name, installed_version, config_file, semantic_versioning):
+def get_pypi_version(name):
     r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
     if not r.ok:
-        raise RuntimeError
-
+        raise RuntimeError('Response code %s.' % r.status_code)
     data = r.json()
-    upstream_version = data['info']['version']
+    return data['info']['version']
+
+
+def _check(name, installed_version, config_file, semantic_versioning):
+    upstream_version = get_pypi_version(name)
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
     if iv < uv:
-        print(
-            '>\n> Upgrade to   ' +
-            _bash_color.GREEN +
-            '%s %s' % (name, upstream_version) +
-            _bash_color.END +
-            '    available! (installed: %s)\n>' % installed_version
+        _print_update_warning(
+            name,
+            uv,
+            iv,
+            config_file,
+            semantic_versioning
             )
-        if semantic_versioning:
-            # Check if the leftmost nonzero version number changed. If yes,
-            # this means an API change according to Semantic Versioning.
-            leftmost_changed = False
-            for k in range(min(len(iv.version), len(uv.version))):
-                if iv.version[k] < uv.version[k]:
-                    leftmost_changed = True
-                    break
-            if leftmost_changed:
-                print(
-                   ('> %s\'s API changes in this upgrade. '
-                    'Changes to your code may be necessary.\n>'
-                    ) % name
-                   )
-        if platform == 'linux' or platform == 'linux2':
-            print((
-                '> To upgrade %s with pip, type\n>\n'
-                '>    pip install -U %s\n>\n'
-                '> To upgrade all pip-installed packages, type\n>\n'
-                '>    pip freeze --local | grep -v \'^\-e\' | '
-                'cut -d = -f 1 | xargs -n1 pip install -U\n>'
-                ) % (name, name))
+    return
 
+
+def _change_in_leftmost_nonzero(a, b):
+    leftmost_changed = False
+    for k in range(min(len(a), len(b))):
+        if a[k] == 0 and b[k] == 0:
+            continue
+        leftmost_changed = (a[k] != b[k])
+        break
+    return leftmost_changed
+
+
+def _print_update_warning(
+        name,
+        uv,
+        iv,
+        config_file,
+        semantic_versioning
+        ):
+    print(
+        '>\n> Upgrade to   ' +
+        _bash_color.GREEN +
+        '%s %s' % (name, uv.vstring) +
+        _bash_color.END +
+        '    available! (installed: %s)\n>' % iv.vstring
+        )
+    # Check if the leftmost nonzero version number changed. If yes,
+    # this means an API change according to Semantic Versioning.
+    if semantic_versioning and \
+            _change_in_leftmost_nonzero(iv.version, uv.version):
         print(
-            '> To disable these checks, '
-            'set the SecondsBetweenChecks in %s to -1.\n>' % config_file
-            )
+           ('> %s\'s API changes in this upgrade. '
+            'Changes to your code may be necessary.\n>'
+            ) % name
+           )
+    if platform == 'linux' or platform == 'linux2':
+        print((
+            '> To upgrade %s with pip, type\n>\n'
+            '>    pip install -U %s\n>\n'
+            '> To upgrade all pip-installed packages, type\n>\n'
+            '>    pip freeze --local | grep -v \'^\-e\' | '
+            'cut -d = -f 1 | xargs -n1 pip install -U\n>'
+            ) % (name, name))
+
+    print(
+        '> To disable these checks, '
+        'set SecondsBetweenChecks in %s to -1.\n>' % config_file
+        )
 
     return
