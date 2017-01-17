@@ -40,7 +40,7 @@ def _get_sbc(config_file):
     return int(config['DEFAULT']['SecondsBetweenChecks'])
 
 
-def check(name, installed_version, semantic_versioning=True):
+def check_and_notify(name, installed_version, semantic_versioning=True):
     homedir = os.path.expanduser('~')
     config_file = os.path.join(homedir, '.pypi_update_checker')
     seconds_between_checks = _get_sbc(config_file)
