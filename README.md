@@ -33,6 +33,9 @@ This will print
 >
 ```
 
+This can, for example, be used by module authors to notify users of upgrades of
+their own modules.
+
 ### Installation
 
 #### Python Package Index

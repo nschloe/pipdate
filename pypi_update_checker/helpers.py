@@ -3,6 +3,7 @@
 import configparser
 from datetime import datetime
 from distutils.version import LooseVersion
+import json
 import os
 import requests
 from sys import platform
@@ -40,6 +41,30 @@ def _get_sbc(config_file):
     return int(config['DEFAULT']['SecondsBetweenChecks'])
 
 
+def _get_last_check_time(logfile, name):
+    with open(logfile, 'r') as handle:
+        d = json.load(handle)
+        last_checked = datetime.strptime(
+            d[name],
+            '%Y-%m-%d %H:%M:%S'
+            )
+    return last_checked
+
+
+def _log_time(logfile, name):
+    print('log!')
+    if os.path.exists(logfile):
+        with open(logfile, 'r') as handle:
+            d = json.load(handle)
+    else:
+        d = {}
+
+    d[name] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(logfile, 'w') as handle:
+        json.dump(d, handle)
+    return
+
+
 def check_and_notify(name, installed_version, semantic_versioning=True):
     homedir = os.path.expanduser('~')
     config_file = os.path.join(homedir, '.pypi_update_checker')
@@ -54,16 +79,11 @@ def check_and_notify(name, installed_version, semantic_versioning=True):
         tempfile.gettempdir(),
         'pypi_update_checker_last_check_time'
         )
-    if os.path.exists(logfile):
-        with open(logfile, 'r') as f:
-            last_checked = datetime.strptime(
-                f.readline(),
-                '%Y-%m-%d %H:%M:%S'
-                )
-        timedelta = datetime.now() - last_checked
-        if timedelta.total_seconds() < seconds_between_checks:
-            # don't check yet
-            return
+    if os.path.exists(logfile) and \
+            (datetime.now() - _get_last_check_time(logfile, name))\
+            .total_seconds() < seconds_between_checks:
+        # don't check yet
+        return
 
     try:
         _check(
@@ -73,9 +93,7 @@ def check_and_notify(name, installed_version, semantic_versioning=True):
             semantic_versioning=semantic_versioning,
             )
         # write timestamp to logfile
-        sttime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        with open(logfile, 'w') as f:
-            f.write(sttime)
+        _log_time(logfile, name)
     except RuntimeError:
         pass
 
