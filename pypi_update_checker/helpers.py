@@ -22,9 +22,7 @@ class _bash_color:
     END = '\033[0m'
 
 
-def _get_sbc_from_config_file():
-    homedir = os.path.expanduser('~')
-    config_file = os.path.join(homedir, '.pypi_update_checker')
+def _get_sbc(config_file):
 
     if not os.path.exists(config_file):
         # add default config
@@ -43,9 +41,10 @@ def _get_sbc_from_config_file():
 
 
 def check(name, installed_version, semantic_versioning=True):
-    seconds_between_checks = _get_sbc_from_config_file()
+    homedir = os.path.expanduser('~')
+    config_file = os.path.join(homedir, '.pypi_update_checker')
+    seconds_between_checks = _get_sbc(config_file)
 
-    print(seconds_between_checks)
     if seconds_between_checks < 0:
         # never check
         return
@@ -70,7 +69,8 @@ def check(name, installed_version, semantic_versioning=True):
         _check(
             name,
             installed_version,
-            semantic_versioning=semantic_versioning
+            config_file=config_file,
+            semantic_versioning=semantic_versioning,
             )
         # write timestamp to logfile
         sttime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -82,7 +82,7 @@ def check(name, installed_version, semantic_versioning=True):
     return
 
 
-def _check(name, installed_version, semantic_versioning):
+def _check(name, installed_version, config_file, semantic_versioning):
     r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
     if not r.ok:
         raise RuntimeError
@@ -121,5 +121,10 @@ def _check(name, installed_version, semantic_versioning):
                 '>    pip freeze --local | grep -v \'^\-e\' | '
                 'cut -d = -f 1 | xargs -n1 pip install -U\n>'
                 ) % (name, name))
+
+        print(
+            '> To disable these checks, '
+            'set the SecondsBetweenChecks in %s to -1.\n>' % config_file
+            )
 
     return
