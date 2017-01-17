@@ -2,6 +2,8 @@
 #
 from distutils.version import LooseVersion
 import requests
+from sys import platform
+
 
 class _bash_color:
     PURPLE = '\033[95m'
@@ -26,7 +28,7 @@ def check(name, installed_version, semantic_versioning=True):
         if iv < uv:
             print(
                 '\nUpgrade to   ' +
-                _bash_color.BOLD +
+                _bash_color.GREEN +
                 '%s %s' % (name, upstream_version) +
                 _bash_color.END +
                 '    available! (installed: %s)\n' % installed_version
@@ -45,4 +47,12 @@ def check(name, installed_version, semantic_versioning=True):
                         'Changes to your code may be necessary.\n'
                         ) % name
                        )
+            if platform == 'linux' or platform == 'linux2':
+                print((
+                    'To upgrade %s with pip, type\n\n'
+                    '    pip install -U %s\n\n'
+                    'To upgrade all pip-installed packages, type\n\n'
+                    '    pip freeze --local | grep -v \'^\-e\' | '
+                    'cut -d = -f 1 | xargs -n1 pip install -U\n'
+                    ) % (name, name))
     return
