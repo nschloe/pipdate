@@ -27,11 +27,11 @@ def check(name, installed_version, semantic_versioning=True):
         uv = LooseVersion(upstream_version)
         if iv < uv:
             print(
-                '\nUpgrade to   ' +
+                '>\n> Upgrade to   ' +
                 _bash_color.GREEN +
                 '%s %s' % (name, upstream_version) +
                 _bash_color.END +
-                '    available! (installed: %s)\n' % installed_version
+                '    available! (installed: %s)\n>' % installed_version
                 )
             if semantic_versioning:
                 # Check if the leftmost nonzero version number changed. If yes,
@@ -43,16 +43,16 @@ def check(name, installed_version, semantic_versioning=True):
                         break
                 if leftmost_changed:
                     print(
-                       ('%s\'s API changes in this upgrade. '
-                        'Changes to your code may be necessary.\n'
+                       ('> %s\'s API changes in this upgrade. '
+                        'Changes to your code may be necessary.\n>'
                         ) % name
                        )
             if platform == 'linux' or platform == 'linux2':
                 print((
-                    'To upgrade %s with pip, type\n\n'
-                    '    pip install -U %s\n\n'
-                    'To upgrade all pip-installed packages, type\n\n'
-                    '    pip freeze --local | grep -v \'^\-e\' | '
-                    'cut -d = -f 1 | xargs -n1 pip install -U\n'
+                    '> To upgrade %s with pip, type\n>\n'
+                    '>    pip install -U %s\n>\n'
+                    '> To upgrade all pip-installed packages, type\n>\n'
+                    '>    pip freeze --local | grep -v \'^\-e\' | '
+                    'cut -d = -f 1 | xargs -n1 pip install -U\n>'
                     ) % (name, name))
     return
