@@ -1,6 +1,9 @@
 # updated
 
+[![Build
+Status](https://travis-ci.org/nschloe/updated.svg?branch=master)](https://travis-ci.org/nschloe/updated)
 [![Code Health](https://landscape.io/github/nschloe/updated/master/landscape.png)](https://landscape.io/github/nschloe/updated/master)
+[![codecov](https://codecov.io/gh/nschloe/updated/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/updated)
 [![PyPi Version](https://img.shields.io/pypi/v/updated.svg)](https://pypi.python.org/pypi/updated)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/updated.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/updated)
 
