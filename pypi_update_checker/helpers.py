@@ -23,28 +23,34 @@ class _bash_color:
     END = '\033[0m'
 
 
-def _get_sbc(config_file):
+_config_file = os.path.join(os.path.expanduser('~'), '.pypi_update_checker')
+_log_file = os.path.join(
+        tempfile.gettempdir(),
+        'pypi_update_checker_last_check_time'
+        )
 
-    if not os.path.exists(config_file):
+
+def _get_sbc():
+    if not os.path.exists(_config_file):
         # add default config
         config = configparser.ConfigParser()
         config['DEFAULT'] = {
             'SecondsBetweenChecks': 24*60*60,
             }
-        with open(config_file, 'w') as configfile:
-            config.write(configfile)
+        with open(_config_file, 'w') as handle:
+            config.write(handle)
 
     # read config
     config = configparser.ConfigParser()
-    config.read(config_file)
+    config.read(_config_file)
 
     return int(config['DEFAULT']['SecondsBetweenChecks'])
 
 
-def _get_last_check_time(logfile, name):
-    if not os.path.exists(logfile):
+def _get_last_check_time(name):
+    if not os.path.exists(_log_file):
         return None
-    with open(logfile, 'r') as handle:
+    with open(_log_file, 'r') as handle:
         d = json.load(handle)
         if name in d:
             last_checked = datetime.strptime(
@@ -56,49 +62,44 @@ def _get_last_check_time(logfile, name):
     return last_checked
 
 
-def _log_time(logfile, name):
-    if os.path.exists(logfile):
-        with open(logfile, 'r') as handle:
+def _log_time(name):
+    if os.path.exists(_log_file):
+        with open(_log_file, 'r') as handle:
             d = json.load(handle)
     else:
         d = {}
 
     d[name] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open(logfile, 'w') as handle:
+    with open(_log_file, 'w') as handle:
         json.dump(d, handle)
     return
 
 
-def check_and_notify(name, installed_version, semantic_versioning=True):
-    homedir = os.path.expanduser('~')
-    config_file = os.path.join(homedir, '.pypi_update_checker')
-    seconds_between_checks = _get_sbc(config_file)
+def needs_checking(name):
+    seconds_between_checks = _get_sbc()
 
     if seconds_between_checks < 0:
-        # never check
-        return
+        return False
 
     # get the last time we checked and compare with seconds_between_checks
-    logfile = os.path.join(
-        tempfile.gettempdir(),
-        'pypi_update_checker_last_check_time'
-        )
-    last_checked = _get_last_check_time(logfile, name)
+    last_checked = _get_last_check_time(name)
     if last_checked is not None and \
             (datetime.now() - last_checked).total_seconds() \
             < seconds_between_checks:
-        # don't check yet
-        return
+        return False
 
+    return True
+
+
+def check_and_notify(name, installed_version, semantic_versioning=True):
     try:
         _check(
             name,
             installed_version,
-            config_file=config_file,
             semantic_versioning=semantic_versioning,
             )
-        # write timestamp to logfile
-        _log_time(logfile, name)
+        # write timestamp to log file
+        _log_time(name)
     except RuntimeError:
         pass
 
@@ -113,7 +114,7 @@ def get_pypi_version(name):
     return data['info']['version']
 
 
-def _check(name, installed_version, config_file, semantic_versioning):
+def _check(name, installed_version, semantic_versioning):
     upstream_version = get_pypi_version(name)
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
@@ -122,7 +123,6 @@ def _check(name, installed_version, config_file, semantic_versioning):
             name,
             uv,
             iv,
-            config_file,
             semantic_versioning
             )
     return
@@ -142,7 +142,6 @@ def _print_update_warning(
         name,
         uv,
         iv,
-        config_file,
         semantic_versioning
         ):
     print(
@@ -176,7 +175,7 @@ def _print_update_warning(
 
     print(
         '> To disable these checks, '
-        'set SecondsBetweenChecks in %s to -1.\n>' % config_file
+        'set SecondsBetweenChecks in %s to -1.\n>' % _config_file
         )
 
     return

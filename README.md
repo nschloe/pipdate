@@ -33,8 +33,13 @@ This will print
 >
 ```
 
-The function `check_and_notify` respects the setting in the config file
-`$HOME/.pypi_update_checker`¸
+If you guard the check with
+```
+if pypi_update_checker.needs_checking('matplotlib'):
+    pypi_update_checker.check_and_notify('matplotlib', '0.4.5')
+```
+then the check will be performed at most every k seconds, where k is specified
+in the config file `$HOME/.pypi_update_checker`,
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
