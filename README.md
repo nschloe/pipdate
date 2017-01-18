@@ -29,7 +29,7 @@ This will print
 >    pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 >
 > To disable these checks, set SecondsBetweenChecks in
-> /home/johndoe/.pypi_update_checker to -1.
+> /home/jdoe/.config/pypi_update_checker.meta/config.ini
 >
 ```
 
