@@ -3,7 +3,7 @@
 import appdirs
 try:
     import configparser
-except:
+except ImportError:
     import ConfigParser as configparser
 from datetime import datetime
 from distutils.version import LooseVersion
