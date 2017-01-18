@@ -25,7 +25,7 @@ setup(
     download_url='https://pypi.python.org/pypi/pypi_version_checker',
     author=__author__,
     author_email=__email__,
-    requires=['requests'],
+    requires=['appdirs', 'requests'],
     description='check for updates on PyPi',
     long_description=read('README.rst'),
     license=__license__,

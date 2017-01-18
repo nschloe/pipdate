@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+from pypi_update_checker.meta import __name__ as name
+from pypi_update_checker.meta import __author__ as author
+
+import appdirs
 import configparser
 from datetime import datetime
 from distutils.version import LooseVersion
@@ -7,7 +11,6 @@ import json
 import os
 import requests
 from sys import platform
-import tempfile
 
 
 class _bash_color:
@@ -23,14 +26,18 @@ class _bash_color:
     END = '\033[0m'
 
 
-_config_file = os.path.join(os.path.expanduser('~'), '.pypi_update_checker')
-_log_file = os.path.join(
-        tempfile.gettempdir(),
-        'pypi_update_checker_last_check_time'
-        )
+_config_dir = appdirs.user_config_dir(name)
+if not os.path.exists(_config_dir):
+    os.makedirs(_config_dir)
+_config_file = os.path.join(_config_dir, 'config.ini')
+
+_log_dir = appdirs.user_log_dir(name, author)
+if not os.path.exists(_log_dir):
+    os.makedirs(_log_dir)
+_log_file = os.path.join(_log_dir, 'times.log')
 
 
-def _get_sbc():
+def _get_seconds_between_checks():
     if not os.path.exists(_config_file):
         # add default config
         config = configparser.ConfigParser()
@@ -76,7 +83,7 @@ def _log_time(name, time):
 
 
 def needs_checking(name):
-    seconds_between_checks = _get_sbc()
+    seconds_between_checks = _get_seconds_between_checks()
 
     if seconds_between_checks < 0:
         return False
