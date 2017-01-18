@@ -99,16 +99,15 @@ def needs_checking(name):
 def get_pypi_version(name):
     r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
     if not r.ok:
-        raise RuntimeError('Response code %s.' % r.status_code)
+        raise RuntimeError(
+            'Response code %s from pypi.python.org.' % r.status_code
+            )
     data = r.json()
     return data['info']['version']
 
 
 def check_and_notify(name, installed_version, semantic_versioning=True):
-    try:
-        upstream_version = get_pypi_version(name)
-    except RuntimeError:
-        return
+    upstream_version = get_pypi_version(name)
 
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
