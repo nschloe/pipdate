@@ -4,7 +4,7 @@ from distutils.core import setup
 import os
 import codecs
 
-from pypi_version_checker import __version__, __license__, __author__, __email__
+from updated import __version__, __license__, __author__, __email__
 
 
 def read(fname):
@@ -18,11 +18,11 @@ def read(fname):
     return content
 
 setup(
-    name='pypi_version_checker',
+    name='updated',
     version=__version__,
-    packages=['pypi_version_checker'],
-    url='https://github.com/nschloe/pypi_version_checker',
-    download_url='https://pypi.python.org/pypi/pypi_version_checker',
+    packages=['updated'],
+    url='https://github.com/nschloe/updated',
+    download_url='https://pypi.python.org/pypi/updated',
     author=__author__,
     author_email=__email__,
     requires=['appdirs', 'requests'],

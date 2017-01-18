@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-from pypi_update_checker.meta import __name__ as name
-from pypi_update_checker.meta import __author__ as author
+from updated.meta import __name__ as name
+from updated.meta import __author__ as author
 
 import appdirs
 import configparser

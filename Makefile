@@ -1,4 +1,4 @@
-VERSION=$(shell python -c "import pypi_version_checker; print(pypi_version_checker.__version__)")
+VERSION=$(shell python -c "import updated; print(updated.__version__)")
 
 # Make sure we're on the master branch
 ifneq "$(shell git rev-parse --abbrev-ref HEAD)" "master"

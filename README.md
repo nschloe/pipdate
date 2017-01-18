@@ -1,16 +1,16 @@
-# pypi_update_checker
+# updated
 
-[![Code Health](https://landscape.io/github/nschloe/pypi_update_checker/master/landscape.png)](https://landscape.io/github/nschloe/pypi_update_checker/master)
-[![PyPi Version](https://img.shields.io/pypi/v/pypi_update_checker.svg)](https://pypi.python.org/pypi/pypi_update_checker)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/pypi_update_checker.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pypi_update_checker)
+[![Code Health](https://landscape.io/github/nschloe/updated/master/landscape.png)](https://landscape.io/github/nschloe/updated/master)
+[![PyPi Version](https://img.shields.io/pypi/v/updated.svg)](https://pypi.python.org/pypi/updated)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/updated.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/updated)
 
-pypi_update_checker checks if a module is older than a release on PyPi, and
+updated checks if a module is older than a release on PyPi, and
 prints a warning if necessary.
 
-Using pypi_update_checker is really easy. Simply run
+Using updated is really easy. Simply run
 ```python
-import pypi_update_checker
-pypi_update_checker.check_and_notify('matplotlib', '0.4.5')
+import updated
+updated.check_and_notify('matplotlib', '0.4.5')
 ```
 This will print
 ```
@@ -29,17 +29,17 @@ This will print
 >    pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 >
 > To disable these checks, set SecondsBetweenChecks in
-> /home/jdoe/.config/pypi_update_checker.meta/config.ini
+> /home/jdoe/.config/updated.meta/config.ini
 >
 ```
 
 If you guard the check with
 ```python
-if pypi_update_checker.needs_checking('matplotlib'):
-    pypi_update_checker.check_and_notify('matplotlib', '0.4.5')
+if updated.needs_checking('matplotlib'):
+    updated.check_and_notify('matplotlib', '0.4.5')
 ```
 then the check will be performed at most every k seconds, where k is specified
-in the config file `$HOME/.pypi_update_checker`,
+in the config file `$HOME/.updated`,
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
@@ -54,22 +54,22 @@ their own modules.
 
 #### Python Package Index
 
-pypi_update_checker is [available from the Python Package
-Index](https://pypi.python.org/pypi/pypi_update_checker/), so simply type
+updated is [available from the Python Package
+Index](https://pypi.python.org/pypi/updated/), so simply type
 ```
-pip install pypi_update_checker
+pip install updated
 ```
 
 #### Manual installation
 
-Download pypi_update_checker from
-[the Python Package Index](https://pypi.python.org/pypi/pypi_update_checker/).
-Place the pypi_update_checker script in a directory where Python can find it
+Download updated from
+[the Python Package Index](https://pypi.python.org/pypi/updated/).
+Place the updated script in a directory where Python can find it
 (e.g., `$PYTHONPATH`).  You can install it system-wide with
 ```
 python setup.py install
 ```
-or place the script `pypi_update_checker.py` into the directory where you
+or place the script `updated.py` into the directory where you
 intend to use it.
 
 
@@ -86,4 +86,4 @@ To create a new release
 
 ### License
 
-pypi_update_checker is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+updated is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
