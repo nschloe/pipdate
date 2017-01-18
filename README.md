@@ -32,7 +32,7 @@ This will print
 >    pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 >
 > To disable these checks, set SecondsBetweenChecks in
-> /home/jdoe/.config/updated.meta/config.ini
+> /home/jdoe/.config/updated/config.ini
 >
 ```
 
@@ -42,7 +42,7 @@ if updated.needs_checking('matplotlib'):
     updated.check_and_notify('matplotlib', '0.4.5')
 ```
 then the check will be performed at most every k seconds, where k is specified
-in the config file `$HOME/.config/updated.meta/config.ini`
+in the config file `$HOME/.config/updated/config.ini`
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
