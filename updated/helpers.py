@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 #
 import appdirs
-import configparser
+try:
+    import configparser
+except:
+    import ConfigParser as configparser
 from datetime import datetime
 from distutils.version import LooseVersion
 import json
