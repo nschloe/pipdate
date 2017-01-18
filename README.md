@@ -72,6 +72,12 @@ python setup.py install
 or place the script `updated.py` into the directory where you
 intend to use it.
 
+### Testing
+
+To run the updated unit tests, check out this repository and type
+```
+pytest
+```
 
 ### Distribution
 
