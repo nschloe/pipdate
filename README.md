@@ -34,7 +34,7 @@ This will print
 ```
 
 If you guard the check with
-```
+```python
 if pypi_update_checker.needs_checking('matplotlib'):
     pypi_update_checker.check_and_notify('matplotlib', '0.4.5')
 ```

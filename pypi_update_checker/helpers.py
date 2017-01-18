@@ -93,15 +93,20 @@ def needs_checking(name):
 
 def check_and_notify(name, installed_version, semantic_versioning=True):
     try:
-        _check(
+        upstream_version = get_pypi_version(name)
+    except RuntimeError:
+        return
+
+    iv = LooseVersion(installed_version)
+    uv = LooseVersion(upstream_version)
+    if iv < uv:
+        _print_warning(
             name,
-            installed_version,
+            iv, uv,
             semantic_versioning=semantic_versioning,
             )
         # write timestamp to log file
         _log_time(name)
-    except RuntimeError:
-        pass
 
     return
 
@@ -114,20 +119,6 @@ def get_pypi_version(name):
     return data['info']['version']
 
 
-def _check(name, installed_version, semantic_versioning):
-    upstream_version = get_pypi_version(name)
-    iv = LooseVersion(installed_version)
-    uv = LooseVersion(upstream_version)
-    if iv < uv:
-        _print_update_warning(
-            name,
-            uv,
-            iv,
-            semantic_versioning
-            )
-    return
-
-
 def _change_in_leftmost_nonzero(a, b):
     leftmost_changed = False
     for k in range(min(len(a), len(b))):
@@ -138,12 +129,7 @@ def _change_in_leftmost_nonzero(a, b):
     return leftmost_changed
 
 
-def _print_update_warning(
-        name,
-        uv,
-        iv,
-        semantic_versioning
-        ):
+def _print_warning(name, iv, uv, semantic_versioning):
     print(
         '>\n> Upgrade to   ' +
         _bash_color.GREEN +
