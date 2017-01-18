@@ -6,19 +6,21 @@ python:
     - '2.7'
     - '3.4'
 
-virtualenv:
-  system_site_packages: true
+# virtualenv:
+#   system_site_packages: true
 
-addons:
-  apt:
-    packages:
-      - python-pytest
-      - python3-pytest
-      - python-pip
-      - python3-pip
+# addons:
+#   apt:
+#     packages:
+#       - python-pytest
+#       - python3-pytest
+#       - python-pip
+#       - python3-pip
 
+# <https://docs.travis-ci.com/user/languages/python/>
+# > If you need to install Python packages, do it via pip and not apt.
 before_install:
-  - pip install pytest-cov
+  - pip install pytest pytest-cov
 
 install:
   - pip install -r requirements.txt
