@@ -62,14 +62,14 @@ def _get_last_check_time(name):
     return last_checked
 
 
-def _log_time(name):
+def _log_time(name, time):
     if os.path.exists(_log_file):
         with open(_log_file, 'r') as handle:
             d = json.load(handle)
     else:
         d = {}
 
-    d[name] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    d[name] = time.strftime('%Y-%m-%d %H:%M:%S')
     with open(_log_file, 'w') as handle:
         json.dump(d, handle)
     return
@@ -91,6 +91,14 @@ def needs_checking(name):
     return True
 
 
+def get_pypi_version(name):
+    r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
+    if not r.ok:
+        raise RuntimeError('Response code %s.' % r.status_code)
+    data = r.json()
+    return data['info']['version']
+
+
 def check_and_notify(name, installed_version, semantic_versioning=True):
     try:
         upstream_version = get_pypi_version(name)
@@ -100,23 +108,10 @@ def check_and_notify(name, installed_version, semantic_versioning=True):
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
     if iv < uv:
-        _print_warning(
-            name,
-            iv, uv,
-            semantic_versioning=semantic_versioning,
-            )
-        # write timestamp to log file
-        _log_time(name)
+        _print_warning(name, iv, uv, semantic_versioning=semantic_versioning)
+        _log_time(name, datetime.now())
 
     return
-
-
-def get_pypi_version(name):
-    r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
-    if not r.ok:
-        raise RuntimeError('Response code %s.' % r.status_code)
-    data = r.json()
-    return data['info']['version']
 
 
 def _change_in_leftmost_nonzero(a, b):
@@ -137,8 +132,8 @@ def _print_warning(name, iv, uv, semantic_versioning):
         _bash_color.END +
         '    available! (installed: %s)\n>' % iv.vstring
         )
-    # Check if the leftmost nonzero version number changed. If yes,
-    # this means an API change according to Semantic Versioning.
+    # Check if the leftmost nonzero version number changed. If yes, this means
+    # an API change according to Semantic Versioning.
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
         print(
