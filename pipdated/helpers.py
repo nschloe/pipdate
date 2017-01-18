@@ -151,9 +151,8 @@ def _get_message(name, iv, uv, semantic_versioning):
         messages.append((
             'To upgrade %s with pip, type\n\n'
             '   pip install -U %s\n\n'
-            'To upgrade all pip-installed packages, type\n\n'
-            '   pip freeze --local | grep -v \'^\-e\' | '
-            'cut -d = -f 1 | xargs -n1 pip install -U\n'
+            'To upgrade _all_ pip-installed packages, type\n\n'
+            '   pipdate\n'
             ) % (name, name))
 
     messages.append(

@@ -39,5 +39,8 @@ setup(
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
         'Topic :: System :: Software Distribution',
+        ],
+    scripts=[
+        'tools/pipdate'
         ]
     )

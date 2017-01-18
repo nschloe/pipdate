@@ -7,8 +7,8 @@ Status](https://travis-ci.org/nschloe/pipdated.svg?branch=master)](https://travi
 [![PyPi Version](https://img.shields.io/pypi/v/pipdated.svg)](https://pypi.python.org/pypi/pipdated)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdated.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdated)
 
-pipdated checks if a module is older than a release on PyPi, and
-prints a warning if necessary.
+pipdated checks if on PyPi if a given module is outdated. Can be used for
+upgrade notifications.
 
 Using pipdated is really easy. Simply run
 ```python
@@ -20,8 +20,7 @@ This will print
 ```
 Upgrade to   matplotlib 2.0.0    available! (installed: 0.4.5)
 
-matplotlib's API changes in this upgrade. Changes to your code may be
-necessary.
+matplotlib's API changes in this upgrade. Changes to your code may be necessary.
 
 To upgrade matplotlib with pip, type
 
@@ -29,7 +28,7 @@ To upgrade matplotlib with pip, type
 
 To upgrade all pip-installed packages, type
 
-   pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+   pipdate
 
 To disable these checks, set SecondsBetweenChecks in
 /home/jdoe/.config/pipdated/config.ini
@@ -51,6 +50,12 @@ i.e., once a day.
 
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
+
+Additinally, pipdated provides a little command-line helper tool
+```
+pipdate
+```
+that updates all pip-installed packages.
 
 ### Installation
 
