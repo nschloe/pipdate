@@ -41,7 +41,7 @@ def _get_seconds_between_checks():
     if not os.path.exists(_config_file):
         # add default config
         parser = configparser.ConfigParser()
-        parser.set('DEFAULT', 'SecondsBetweenChecks', 24*60*60)
+        parser.set('DEFAULT', 'SecondsBetweenChecks', str(24*60*60))
         with open(_config_file, 'w') as handle:
             parser.write(handle)
 
