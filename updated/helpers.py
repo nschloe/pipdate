@@ -40,18 +40,16 @@ _log_file = os.path.join(_log_dir, 'times.log')
 def _get_seconds_between_checks():
     if not os.path.exists(_config_file):
         # add default config
-        config = configparser.ConfigParser()
-        config['DEFAULT'] = {
-            'SecondsBetweenChecks': 24*60*60,
-            }
+        parser = configparser.ConfigParser()
+        parser.set('DEFAULT', 'SecondsBetweenChecks', 24*60*60)
         with open(_config_file, 'w') as handle:
-            config.write(handle)
+            parser.write(handle)
 
     # read config
     config = configparser.ConfigParser()
     config.read(_config_file)
 
-    return int(config['DEFAULT']['SecondsBetweenChecks'])
+    return config.getint('DEFAULT', 'SecondsBetweenChecks')
 
 
 def _get_last_check_time(name):
