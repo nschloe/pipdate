@@ -7,7 +7,7 @@ Status](https://travis-ci.org/nschloe/pipdated.svg?branch=master)](https://travi
 [![PyPi Version](https://img.shields.io/pypi/v/pipdated.svg)](https://pypi.python.org/pypi/pipdated)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdated.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdated)
 
-pipdated checks if on PyPi if a given module is outdated. Can be used for
+pipdated checks on PyPi if a given module is outdated. Can be used for
 upgrade notifications.
 
 Using pipdated is really easy. Simply run
@@ -40,18 +40,16 @@ if pipdated.needs_checking('matplotlib'):
     print(pipdated.check('matplotlib', '0.4.5'))
 ```
 then the check will be performed at most every k seconds, where k is specified
-in the config file `$HOME/.config/pipdated/config.ini`
+in the config file `$HOME/.config/pipdated/config.ini`, e.g., once a day
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
 ```
-In this case, the check is only performed at most once every 86400 seconds,
-i.e., once a day.
 
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
 
-Additinally, pipdated provides a little command-line helper tool
+Additionally, pipdated provides the little command-line helper tool
 ```
 pipdate
 ```
@@ -71,13 +69,13 @@ pip install pipdated
 
 Download pipdated from
 [the Python Package Index](https://pypi.python.org/pypi/pipdated/).
-Place the pipdated script in a directory where Python can find it
-(e.g., `$PYTHONPATH`).  You can install it system-wide with
+Place it in a directory where Python can find it (e.g., `$PYTHONPATH`).  You
+can install it system-wide with
 ```
 python setup.py install
 ```
-or place the script `pipdated.py` into the directory where you
-intend to use it.
+or place the script `pipdated.py` into the directory where you intend to use
+it.
 
 ### Testing
 
