@@ -33,6 +33,15 @@ This will print
 >
 ```
 
+The function `check_and_notify` respects the setting in the config file
+`$HOME/.pypi_update_checker`¸
+```
+[DEFAULT]
+secondsbetweenchecks = 86400
+```
+In this case, the check is only performed at most once every 86400 seconds,
+i.e., once a day.
+
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
 
