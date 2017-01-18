@@ -23,4 +23,4 @@ tag:
 publish: tag upload
 
 clean:
-	rm -f README.rst
+	rm -rf README.rst MANIFEST dist

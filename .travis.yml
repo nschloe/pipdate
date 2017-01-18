@@ -19,7 +19,7 @@ install:
 
 script:
   - cd test/
-  - pytest --cov updated
+  - pytest --cov pipdated
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
