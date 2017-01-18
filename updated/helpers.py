@@ -134,7 +134,7 @@ def _get_message(name, iv, uv, semantic_versioning):
         _bash_color.GREEN +
         '%s %s' % (name, uv.vstring) +
         _bash_color.END +
-        '    available! (installed: %s)\n>' % iv.vstring
+        '    available! (installed: %s)\n' % iv.vstring
         )
     # Check if the leftmost nonzero version number changed. If yes, this means
     # an API change according to Semantic Versioning.
@@ -158,7 +158,7 @@ def _get_message(name, iv, uv, semantic_versioning):
 
     messages.append(
         'To disable these checks, '
-        'set SecondsBetweenChecks in %s to -1.\n' % _config_file
+        'set SecondsBetweenChecks in %s to -1.' % _config_file
         )
 
     return '\n'.join(messages)

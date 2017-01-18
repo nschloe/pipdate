@@ -13,33 +13,32 @@ prints a warning if necessary.
 Using updated is really easy. Simply run
 ```python
 import updated
-updated.check_and_notify('matplotlib', '0.4.5')
+msg = updated.check('matplotlib', '0.4.5')
+print(msg)
 ```
 This will print
 ```
->
-> Upgrade to   matplotlib 2.0.0    available! (installed: 0.4.5)
->
-> matplotlib's API changes in this upgrade. Changes to your code may be
-> necessary.
->
-> To upgrade matplotlib with pip, type
->
->    pip install -U matplotlib
->
-> To upgrade all pip-installed packages, type
->
->    pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
->
-> To disable these checks, set SecondsBetweenChecks in
-> /home/jdoe/.config/updated/config.ini
->
+Upgrade to   matplotlib 2.0.0    available! (installed: 0.4.5)
+
+matplotlib's API changes in this upgrade. Changes to your code may be
+necessary.
+
+To upgrade matplotlib with pip, type
+
+   pip install -U matplotlib
+
+To upgrade all pip-installed packages, type
+
+   pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+
+To disable these checks, set SecondsBetweenChecks in
+/home/jdoe/.config/updated/config.ini
 ```
 
 If you guard the check with
 ```python
 if updated.needs_checking('matplotlib'):
-    updated.check_and_notify('matplotlib', '0.4.5')
+    print(updated.check('matplotlib', '0.4.5'))
 ```
 then the check will be performed at most every k seconds, where k is specified
 in the config file `$HOME/.config/updated/config.ini`
