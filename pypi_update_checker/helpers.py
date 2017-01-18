@@ -42,17 +42,21 @@ def _get_sbc(config_file):
 
 
 def _get_last_check_time(logfile, name):
+    if not os.path.exists(logfile):
+        return None
     with open(logfile, 'r') as handle:
         d = json.load(handle)
-        last_checked = datetime.strptime(
-            d[name],
-            '%Y-%m-%d %H:%M:%S'
-            )
+        if name in d:
+            last_checked = datetime.strptime(
+                d[name],
+                '%Y-%m-%d %H:%M:%S'
+                )
+        else:
+            return None
     return last_checked
 
 
 def _log_time(logfile, name):
-    print('log!')
     if os.path.exists(logfile):
         with open(logfile, 'r') as handle:
             d = json.load(handle)
@@ -79,9 +83,10 @@ def check_and_notify(name, installed_version, semantic_versioning=True):
         tempfile.gettempdir(),
         'pypi_update_checker_last_check_time'
         )
-    if os.path.exists(logfile) and \
-            (datetime.now() - _get_last_check_time(logfile, name))\
-            .total_seconds() < seconds_between_checks:
+    last_checked = _get_last_check_time(logfile, name)
+    if last_checked is not None and \
+            (datetime.now() - last_checked).total_seconds() \
+            < seconds_between_checks:
         # don't check yet
         return
 
@@ -152,8 +157,12 @@ def _print_update_warning(
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
         print(
-           ('> %s\'s API changes in this upgrade. '
-            'Changes to your code may be necessary.\n>'
+           ('> ' +
+            _bash_color.YELLOW +
+            '%s\'s API changes in this upgrade. '
+            'Changes to your code may be necessary.\n' +
+            _bash_color.END +
+            '>'
             ) % name
            )
     if platform == 'linux' or platform == 'linux2':
