@@ -88,12 +88,9 @@ def needs_checking(name):
 
     # get the last time we checked and compare with seconds_between_checks
     last_checked = _get_last_check_time(name)
-    if last_checked is not None and \
-            (datetime.now() - last_checked).total_seconds() \
-            < seconds_between_checks:
-        return False
-
-    return True
+    return last_checked is None or \
+        (datetime.now() - last_checked).total_seconds() \
+        > seconds_between_checks
 
 
 def get_pypi_version(name):
