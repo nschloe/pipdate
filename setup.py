@@ -4,7 +4,7 @@ from distutils.core import setup
 import os
 import codecs
 
-from updated import __version__, __license__, __author__, __email__
+from pipdated import __version__, __license__, __author__, __email__
 
 
 def read(fname):
@@ -18,11 +18,11 @@ def read(fname):
     return content
 
 setup(
-    name='updated',
+    name='pipdated',
     version=__version__,
-    packages=['updated'],
-    url='https://github.com/nschloe/updated',
-    download_url='https://pypi.python.org/pypi/updated',
+    packages=['pipdated'],
+    url='https://github.com/nschloe/pipdated',
+    download_url='https://pypi.python.org/pypi/pipdated',
     author=__author__,
     author_email=__email__,
     requires=['appdirs', 'requests'],
@@ -39,5 +39,8 @@ setup(
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
         'Topic :: System :: Software Distribution',
+        ],
+    scripts=[
+        'tools/pipdate'
         ]
     )

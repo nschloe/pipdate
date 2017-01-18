@@ -26,12 +26,12 @@ class _bash_color:
     END = '\033[0m'
 
 
-_config_dir = appdirs.user_config_dir('updated')
+_config_dir = appdirs.user_config_dir('pipdated')
 if not os.path.exists(_config_dir):
     os.makedirs(_config_dir)
 _config_file = os.path.join(_config_dir, 'config.ini')
 
-_log_dir = appdirs.user_log_dir('updated', 'Nico Schlömer')
+_log_dir = appdirs.user_log_dir('pipdated', 'Nico Schlömer')
 if not os.path.exists(_log_dir):
     os.makedirs(_log_dir)
 _log_file = os.path.join(_log_dir, 'times.log')
@@ -151,9 +151,8 @@ def _get_message(name, iv, uv, semantic_versioning):
         messages.append((
             'To upgrade %s with pip, type\n\n'
             '   pip install -U %s\n\n'
-            'To upgrade all pip-installed packages, type\n\n'
-            '   pip freeze --local | grep -v \'^\-e\' | '
-            'cut -d = -f 1 | xargs -n1 pip install -U\n'
+            'To upgrade _all_ pip-installed packages, type\n\n'
+            '   pipdate\n'
             ) % (name, name))
 
     messages.append(
