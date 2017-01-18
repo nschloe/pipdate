@@ -1,5 +1,3 @@
-#sudo: false
-#sudo: true
 dist: trusty
 
 language: python
