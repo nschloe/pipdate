@@ -103,16 +103,18 @@ def get_pypi_version(name):
     return data['info']['version']
 
 
-def check_and_notify(name, installed_version, semantic_versioning=True):
+def check(name, installed_version, semantic_versioning=True):
     upstream_version = get_pypi_version(name)
+    _log_time(name, datetime.now())
 
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
     if iv < uv:
-        _print_warning(name, iv, uv, semantic_versioning=semantic_versioning)
-        _log_time(name, datetime.now())
+        return _get_message(
+            name, iv, uv, semantic_versioning=semantic_versioning
+            )
 
-    return
+    return None
 
 
 def _change_in_leftmost_nonzero(a, b):
@@ -125,9 +127,10 @@ def _change_in_leftmost_nonzero(a, b):
     return leftmost_changed
 
 
-def _print_warning(name, iv, uv, semantic_versioning):
-    print(
-        '>\n> Upgrade to   ' +
+def _get_message(name, iv, uv, semantic_versioning):
+    messages = []
+    messages.append(
+        'Upgrade to   ' +
         _bash_color.GREEN +
         '%s %s' % (name, uv.vstring) +
         _bash_color.END +
@@ -137,27 +140,25 @@ def _print_warning(name, iv, uv, semantic_versioning):
     # an API change according to Semantic Versioning.
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
-        print(
-           ('> ' +
-            _bash_color.YELLOW +
+        messages.append(
+           (_bash_color.YELLOW +
             '%s\'s API changes in this upgrade. '
             'Changes to your code may be necessary.\n' +
-            _bash_color.END +
-            '>'
+            _bash_color.END
             ) % name
            )
     if platform == 'linux' or platform == 'linux2':
-        print((
-            '> To upgrade %s with pip, type\n>\n'
-            '>    pip install -U %s\n>\n'
-            '> To upgrade all pip-installed packages, type\n>\n'
-            '>    pip freeze --local | grep -v \'^\-e\' | '
-            'cut -d = -f 1 | xargs -n1 pip install -U\n>'
+        messages.append((
+            'To upgrade %s with pip, type\n\n'
+            '   pip install -U %s\n\n'
+            'To upgrade all pip-installed packages, type\n\n'
+            '   pip freeze --local | grep -v \'^\-e\' | '
+            'cut -d = -f 1 | xargs -n1 pip install -U\n'
             ) % (name, name))
 
-    print(
-        '> To disable these checks, '
-        'set SecondsBetweenChecks in %s to -1.\n>' % _config_file
+    messages.append(
+        'To disable these checks, '
+        'set SecondsBetweenChecks in %s to -1.\n' % _config_file
         )
 
-    return
+    return '\n'.join(messages)
