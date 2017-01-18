@@ -39,7 +39,7 @@ if updated.needs_checking('matplotlib'):
     updated.check_and_notify('matplotlib', '0.4.5')
 ```
 then the check will be performed at most every k seconds, where k is specified
-in the config file `$HOME/.updated`,
+in the config file `$HOME/.config/updated.meta/config.ini`
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
