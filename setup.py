@@ -25,7 +25,10 @@ setup(
     download_url='https://pypi.python.org/pypi/pipdated',
     author=__author__,
     author_email=__email__,
-    requires=['appdirs', 'requests'],
+    install_requires=[
+        'appdirs',
+        'requests'
+        ],
     description='check for updates on PyPi',
     long_description=read('README.rst'),
     license=__license__,
