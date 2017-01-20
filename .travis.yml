@@ -12,14 +12,10 @@ before_install:
   - pip install pytest pytest-cov
 
 install:
-  - pip install -r requirements.txt
-  - pip3 install -r requirements.txt
   - pip install .
-  - pip3 install .
 
 script:
-  - cd test/
-  - pytest --cov pipdated
+  - cd test/ &&  pytest --cov pipdated
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -4,7 +4,11 @@ from distutils.core import setup
 import os
 import codecs
 
-from pipdated import __version__, __license__, __author__, __email__
+# https://packaging.python.org/single_source_version/
+base_dir = os.path.abspath(os.path.dirname(__file__))
+about = {}
+with open(os.path.join(base_dir, 'pipdated', '__about__.py')) as f:
+    exec(f.read(), about)
 
 
 def read(fname):
@@ -17,18 +21,22 @@ def read(fname):
         content = ''
     return content
 
+
 setup(
     name='pipdated',
-    version=__version__,
+    version=about['__version__'],
     packages=['pipdated'],
     url='https://github.com/nschloe/pipdated',
     download_url='https://pypi.python.org/pypi/pipdated',
-    author=__author__,
-    author_email=__email__,
-    requires=['appdirs', 'requests'],
+    author=about['__author__'],
+    author_email=about['__email__'],
+    install_requires=[
+        'appdirs',
+        'requests'
+        ],
     description='check for updates on PyPi',
     long_description=read('README.rst'),
-    license=__license__,
+    license=about['__license__'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
