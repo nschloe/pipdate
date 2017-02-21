@@ -9,6 +9,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 import json
 import os
+import requests
 from sys import platform
 
 
@@ -93,7 +94,6 @@ def needs_checking(name):
 
 
 def get_pypi_version(name):
-    import requests
     r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
     if not r.ok:
         raise RuntimeError(
@@ -104,7 +104,10 @@ def get_pypi_version(name):
 
 
 def check(name, installed_version, semantic_versioning=True):
-    upstream_version = get_pypi_version(name)
+    try:
+        upstream_version = get_pypi_version(name)
+    except requests.ConnectionError or RuntimeError:
+        return None
     _log_time(name, datetime.now())
 
     iv = LooseVersion(installed_version)
