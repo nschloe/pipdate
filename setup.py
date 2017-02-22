@@ -38,8 +38,8 @@ setup(
     long_description=read('README.rst'),
     license=about['__license__'],
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: MIT License',
+        about['__status__'],
+        about['__license__'],
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
