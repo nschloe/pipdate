@@ -157,8 +157,8 @@ def _get_message(name, iv, uv, semantic_versioning):
         messages.append((
             'To upgrade %s with pip, type\n\n'
             '   pip install -U %s\n\n'
-            'To upgrade _all_ pip-installed packages, type\n\n'
-            '   pipdate\n'
+            'To upgrade _all_ pip-installed packages, use\n\n'
+            '   pipdate/pipdate3\n'
             ) % (name, name))
 
     messages.append(

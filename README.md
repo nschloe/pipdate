@@ -26,10 +26,9 @@ To upgrade matplotlib with pip, type
 
    pip install -U matplotlib
 
-To upgrade _all_ pip-installed packages, type
+To upgrade _all_ pip-installed packages, use
 
-   pipdate
-   pipdate3
+   pipdate/pipdate3
 
 To disable these checks, set SecondsBetweenChecks in
 /home/jdoe/.config/pipdated/config.ini
@@ -38,11 +37,9 @@ To disable these checks, set SecondsBetweenChecks in
 If you guard the check with
 ```python
 if pipdated.needs_checking('matplotlib'):
-    msg = pipdated.check('matplotlib', '0.4.5')
-    if msg:
-        print(msg)
+    print(pipdated.check('matplotlib', '0.4.5'))
 ```
-then the check will be performed at most every k seconds, where k is specified
+then it will be performed at most every _k_ seconds, where _k_ is specified
 in the config file `$HOME/.config/pipdated/config.ini`, e.g., once a day
 ```
 [DEFAULT]
