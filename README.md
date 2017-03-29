@@ -50,10 +50,7 @@ This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
 
 Additionally, pipdated provides the little command-line helper tool
-```
-pipdate
-```
-that updates all pip-installed packages.
+`pipdate` and `pipdate3` for upgrading _all_ pip/pip3-installed packages.
 
 ### Installation
 
