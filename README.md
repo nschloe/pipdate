@@ -26,9 +26,10 @@ To upgrade matplotlib with pip, type
 
    pip install -U matplotlib
 
-To upgrade all pip-installed packages, type
+To upgrade _all_ pip-installed packages, type
 
    pipdate
+   pipdate3
 
 To disable these checks, set SecondsBetweenChecks in
 /home/jdoe/.config/pipdated/config.ini
@@ -59,25 +60,11 @@ that updates all pip-installed packages.
 
 ### Installation
 
-#### Python Package Index
-
 pipdated is [available from the Python Package
 Index](https://pypi.python.org/pypi/pipdated/), so simply type
 ```
 pip install pipdated
 ```
-
-#### Manual installation
-
-Download pipdated from
-[the Python Package Index](https://pypi.python.org/pypi/pipdated/).
-Place it in a directory where Python can find it (e.g., `$PYTHONPATH`).  You
-can install it system-wide with
-```
-python setup.py install
-```
-or place the script `pipdated.py` into the directory where you intend to use
-it.
 
 ### Testing
 

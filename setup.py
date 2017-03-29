@@ -50,5 +50,6 @@ setup(
         ],
     scripts=[
         'tools/pipdate'
+        'tools/pipdate3'
         ]
     )
