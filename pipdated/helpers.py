@@ -110,7 +110,7 @@ def check(name, installed_version, semantic_versioning=True):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
-        return None
+        return ''
     _log_time(name, datetime.now())
 
     iv = LooseVersion(installed_version)
@@ -120,7 +120,7 @@ def check(name, installed_version, semantic_versioning=True):
             name, iv, uv, semantic_versioning=semantic_versioning
             )
 
-    return None
+    return ''
 
 
 def _change_in_leftmost_nonzero(a, b):
@@ -157,8 +157,8 @@ def _get_message(name, iv, uv, semantic_versioning):
         messages.append((
             'To upgrade %s with pip, type\n\n'
             '   pip install -U %s\n\n'
-            'To upgrade _all_ pip-installed packages, type\n\n'
-            '   pipdate\n'
+            'To upgrade _all_ pip-installed packages, use\n\n'
+            '   pipdate/pipdate3\n'
             ) % (name, name))
 
     messages.append(

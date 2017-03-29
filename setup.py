@@ -49,6 +49,7 @@ setup(
         'Topic :: System :: Software Distribution',
         ],
     scripts=[
-        'tools/pipdate'
+        'tools/pipdate',
+        'tools/pipdate3'
         ]
     )
