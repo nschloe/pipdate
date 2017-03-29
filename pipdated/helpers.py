@@ -110,7 +110,7 @@ def check(name, installed_version, semantic_versioning=True):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
-        return None
+        return ''
     _log_time(name, datetime.now())
 
     iv = LooseVersion(installed_version)
@@ -120,7 +120,7 @@ def check(name, installed_version, semantic_versioning=True):
             name, iv, uv, semantic_versioning=semantic_versioning
             )
 
-    return None
+    return ''
 
 
 def _change_in_leftmost_nonzero(a, b):
