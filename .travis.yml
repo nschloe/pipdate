@@ -9,12 +9,14 @@ python:
 # <https://docs.travis-ci.com/user/languages/python/>
 # > If you need to install Python packages, do it via pip and not apt.
 before_install:
-  - pip install pytest pytest-cov
+  - pip install pytest pytest-cov pylint
 
 install:
   - pip install .
 
 script:
+  - pylint pipdate
+  - pylint test/*.py
   - cd test/ &&  pytest --cov pipdate
 
 after_success:
