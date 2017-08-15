@@ -1,36 +1,26 @@
 # -*- coding: utf-8 -*-
 #
-import appdirs
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+# pylint: disable=too-few-public-methods,no-name-in-module,import-error
 from datetime import datetime
 from distutils.version import LooseVersion
 import json
 import os
 from sys import platform
 
+import appdirs
 
-class _bash_color:
-    PURPLE = '\033[95m'
-    CYAN = '\033[96m'
-    DARKCYAN = '\033[36m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    END = '\033[0m'
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 
 
-_config_dir = appdirs.user_config_dir('pipdated')
+_config_dir = appdirs.user_config_dir('pipdate')
 if not os.path.exists(_config_dir):
     os.makedirs(_config_dir)
 _config_file = os.path.join(_config_dir, 'config.ini')
 
-_log_dir = appdirs.user_log_dir('pipdated', u'Nico Schlömer')
+_log_dir = appdirs.user_log_dir('pipdate', u'Nico Schlömer')
 if not os.path.exists(_log_dir):
     os.makedirs(_log_dir)
 _log_file = os.path.join(_log_dir, 'times.log')
@@ -134,12 +124,24 @@ def _change_in_leftmost_nonzero(a, b):
 
 
 def _get_message(name, iv, uv, semantic_versioning):
+    class BashColor(object):
+        PURPLE = '\033[95m'
+        CYAN = '\033[96m'
+        DARKCYAN = '\033[36m'
+        BLUE = '\033[94m'
+        GREEN = '\033[92m'
+        YELLOW = '\033[93m'
+        RED = '\033[91m'
+        BOLD = '\033[1m'
+        UNDERLINE = '\033[4m'
+        END = '\033[0m'
+
     messages = []
     messages.append(
         'Upgrade to   ' +
-        _bash_color.GREEN +
+        BashColor.GREEN +
         '%s %s' % (name, uv.vstring) +
-        _bash_color.END +
+        BashColor.END +
         '    available! (installed: %s)\n' % iv.vstring
         )
     # Check if the leftmost nonzero version number changed. If yes, this means
@@ -147,12 +149,12 @@ def _get_message(name, iv, uv, semantic_versioning):
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
         messages.append(
-           (_bash_color.YELLOW +
-            '%s\'s API changes in this upgrade. '
-            'Changes to your code may be necessary.\n' +
-            _bash_color.END
-            ) % name
-           )
+            (BashColor.YELLOW +
+                '%s\'s API changes in this upgrade. ' +
+                'Changes to your code may be necessary.\n' +
+                BashColor.END
+                ) % name
+            )
     if platform == 'linux' or platform == 'linux2':
         messages.append((
             'To upgrade %s with pip, type\n\n'

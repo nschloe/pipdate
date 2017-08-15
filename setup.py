@@ -7,7 +7,7 @@ import codecs
 # https://packaging.python.org/single_source_version/
 base_dir = os.path.abspath(os.path.dirname(__file__))
 about = {}
-with open(os.path.join(base_dir, 'pipdated', '__about__.py')) as f:
+with open(os.path.join(base_dir, 'pipdate', '__about__.py')) as f:
     exec(f.read(), about)
 
 
@@ -23,11 +23,11 @@ def read(fname):
 
 
 setup(
-    name='pipdated',
+    name='pipdate',
     version=about['__version__'],
-    packages=['pipdated'],
-    url='https://github.com/nschloe/pipdated',
-    download_url='https://pypi.python.org/pypi/pipdated',
+    packages=['pipdate'],
+    url='https://github.com/nschloe/pipdate',
+    download_url='https://pypi.python.org/pypi/pipdate',
     author=about['__author__'],
     author_email=about['__email__'],
     install_requires=[
