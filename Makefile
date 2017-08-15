@@ -1,4 +1,4 @@
-VERSION=$(shell python -c "import pipdated; print(pipdated.__version__)")
+VERSION=$(shell python -c "import pipdate; print(pipdate.__version__)")
 
 # Make sure we're on the master branch
 ifneq "$(shell git rev-parse --abbrev-ref HEAD)" "master"

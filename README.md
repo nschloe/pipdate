@@ -1,19 +1,19 @@
-# pipdated
+# pipdate
 
 [![Build
-Status](https://travis-ci.org/nschloe/pipdated.svg?branch=master)](https://travis-ci.org/nschloe/pipdated)
-[![Code Health](https://landscape.io/github/nschloe/pipdated/master/landscape.png)](https://landscape.io/github/nschloe/pipdated/master)
-[![codecov](https://codecov.io/gh/nschloe/pipdated/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/pipdated)
-[![PyPi Version](https://img.shields.io/pypi/v/pipdated.svg)](https://pypi.python.org/pypi/pipdated)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdated.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdated)
+Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
+[![Code Health](https://landscape.io/github/nschloe/pipdate/master/landscape.png)](https://landscape.io/github/nschloe/pipdate/master)
+[![codecov](https://codecov.io/gh/nschloe/pipdate/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/pipdate)
+[![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdate)
 
-pipdated checks on PyPi if a given module is outdated. Can be used for
+pipdate checks on PyPi if a given module is outdated. Can be used for
 upgrade notifications.
 
-Using pipdated is really easy. Simply run
+Using pipdate is really easy. Simply run
 ```python
-import pipdated
-msg = pipdated.check('matplotlib', '0.4.5')
+import pipdate
+msg = pipdate.check('matplotlib', '0.4.5')
 print(msg)
 ```
 This will print
@@ -31,16 +31,16 @@ To upgrade _all_ pip-installed packages, use
    pipdate/pipdate3
 
 To disable these checks, set SecondsBetweenChecks in
-/home/jdoe/.config/pipdated/config.ini
+/home/jdoe/.config/pipdate/config.ini
 ```
 
 If you guard the check with
 ```python
-if pipdated.needs_checking('matplotlib'):
-    print(pipdated.check('matplotlib', '0.4.5'))
+if pipdate.needs_checking('matplotlib'):
+    print(pipdate.check('matplotlib', '0.4.5'))
 ```
 then it will be performed at most every _k_ seconds, where _k_ is specified
-in the config file `$HOME/.config/pipdated/config.ini`, e.g., once a day
+in the config file `$HOME/.config/pipdate/config.ini`, e.g., once a day
 ```
 [DEFAULT]
 secondsbetweenchecks = 86400
@@ -49,20 +49,20 @@ secondsbetweenchecks = 86400
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
 
-Additionally, pipdated provides the little command-line helper tool
+Additionally, pipdate provides the little command-line helper tool
 `pipdate` and `pipdate3` for upgrading _all_ pip/pip3-installed packages.
 
 ### Installation
 
-pipdated is [available from the Python Package
-Index](https://pypi.python.org/pypi/pipdated/), so simply type
+pipdate is [available from the Python Package
+Index](https://pypi.python.org/pypi/pipdate/), so simply type
 ```
-pip install pipdated
+pip install pipdate
 ```
 
 ### Testing
 
-To run the pipdated unit tests, check out this repository and type
+To run the pipdate unit tests, check out this repository and type
 ```
 pytest
 ```
@@ -80,4 +80,4 @@ To create a new release
 
 ### License
 
-pipdated is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+pipdate is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).

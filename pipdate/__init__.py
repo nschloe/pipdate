@@ -3,7 +3,7 @@
 '''Check for updates on PyPi.
 '''
 
-from pipdated.__about__ import (
+from .__about__ import (
         __author__,
         __email__,
         __copyright__,
@@ -11,4 +11,4 @@ from pipdated.__about__ import (
         __version__,
         )
 
-from pipdated.helpers import *
+from .helpers import *

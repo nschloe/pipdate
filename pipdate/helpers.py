@@ -25,12 +25,12 @@ class _bash_color:
     END = '\033[0m'
 
 
-_config_dir = appdirs.user_config_dir('pipdated')
+_config_dir = appdirs.user_config_dir('pipdate')
 if not os.path.exists(_config_dir):
     os.makedirs(_config_dir)
 _config_file = os.path.join(_config_dir, 'config.ini')
 
-_log_dir = appdirs.user_log_dir('pipdated', u'Nico Schlömer')
+_log_dir = appdirs.user_log_dir('pipdate', u'Nico Schlömer')
 if not os.path.exists(_log_dir):
     os.makedirs(_log_dir)
 _log_file = os.path.join(_log_dir, 'times.log')
