@@ -4,3 +4,6 @@ MANIFEST
 README.rst
 dist/
 .cache/
+build/
+.cache/
+*.egg-info/
