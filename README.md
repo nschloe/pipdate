@@ -1,8 +1,6 @@
 # pipdate
 
-[![Build
-Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
-[![Code Health](https://landscape.io/github/nschloe/pipdate/master/landscape.png)](https://landscape.io/github/nschloe/pipdate/master)
+[![Build Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
 [![codecov](https://codecov.io/gh/nschloe/pipdate/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/pipdate)
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdate)
