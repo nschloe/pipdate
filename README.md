@@ -7,8 +7,11 @@ Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdate)
 
-pipdate checks on PyPi if a given module is outdated. Can be used for
-upgrade notifications.
+Small pip update helpers.
+
+pipdate checks on PyPi if a given module is outdated. Can be used for upgrade
+notifications. Addtionally, it provides the little command-line helper tools
+`pipdate`/`pipdate3` for upgrading _all_ pip/pip3-installed packages.
 
 Using pipdate is really easy. Simply run
 ```python
@@ -48,9 +51,6 @@ secondsbetweenchecks = 86400
 
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
-
-Additionally, pipdate provides the little command-line helper tool
-`pipdate` and `pipdate3` for upgrading _all_ pip/pip3-installed packages.
 
 ### Installation
 
