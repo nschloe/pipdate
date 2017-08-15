@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods,no-name-in-module,import-error
 from datetime import datetime
 from distutils.version import LooseVersion
 import json
