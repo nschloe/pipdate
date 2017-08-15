@@ -3,3 +3,4 @@
 MANIFEST
 README.rst
 dist/
+.cache/
