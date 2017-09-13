@@ -3,15 +3,17 @@
 [![Build Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
 [![codecov](https://codecov.io/gh/nschloe/pipdate/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/pipdate)
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Star&maxAge=2592000)](https://github.com/nschloe/pipdate)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Stars&maxAge=2592000)](https://github.com/nschloe/pipdate)
 
 Small pip update helpers.
+```
+sudo -H pipdate
+sudo -H pipdate3
+```
+updates _all_ your pip{3}-installed packages.
 
-pipdate checks on PyPi if a given module is outdated. Can be used for upgrade
-notifications. Addtionally, it provides the little command-line helper tools
-`pipdate`/`pipdate3` for upgrading _all_ pip/pip3-installed packages.
-
-Using pipdate is really easy. Simply run
+There's a Python interface as well that can be used for upgrade notifications.
+Simply do
 ```python
 import pipdate
 msg = pipdate.check('matplotlib', '0.4.5')
@@ -46,7 +48,6 @@ in the config file `$HOME/.config/pipdate/config.ini`, e.g., once a day
 [DEFAULT]
 secondsbetweenchecks = 86400
 ```
-
 This can, for example, be used by module authors to notify users of upgrades of
 their own modules.
 
