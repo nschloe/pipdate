@@ -5,7 +5,7 @@ jobs:
   build:
     working_directory: ~/pipdate
     docker:
-      - image: ubuntu:18.03
+      - image: ubuntu:18.04
     steps:
       - run: apt-get update
       - run: apt-get install -y git python3-pip pandoc
