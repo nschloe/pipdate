@@ -1,9 +1,10 @@
 # pipdate
 
 [![Build Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
-[![codecov](https://codecov.io/gh/nschloe/pipdate/branch/master/graph/badge.svg)](https://codecov.io/gh/nschloe/pipdate)
+[![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg)](https://codecov.io/gh/nschloe/pipdate)
+[![Codacy grade](https://img.shields.io/codacy/grade/e2b04ea7e4a74da2a80799056b72b189.svg)](https://app.codacy.com/app/nschloe/pipdate/dashboard)
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Stars&maxAge=2592000)](https://github.com/nschloe/pipdate)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=social&label=Stars)](https://github.com/nschloe/pipdate)
 
 Small pip update helpers.
 ```
