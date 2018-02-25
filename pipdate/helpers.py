@@ -5,7 +5,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 import json
 import os
-from sys import platform
+import sys
 
 import appdirs
 
@@ -155,13 +155,18 @@ def _get_message(name, iv, uv, semantic_versioning):
             BashColor.END
             ).format(name))
 
-    if platform == 'linux' or platform == 'linux2':
+    three = '3' if sys.version_info >= (3, 0) else ''
+
+    if sys.platform == 'linux' or sys.platform == 'linux2':
         messages.append((
-            'To upgrade {} with pip, type\n\n'
-            '   pip install -U {}\n\n'
-            'To upgrade _all_ pip-installed packages, use\n\n'
-            '   pipdate/pipdate3\n'
-            ).format(name, name))
+            'To upgrade {} with pip, use\n'
+            '\n'
+            '   pip{} install -U {}\n'
+            '\n'
+            'To upgrade _all_ pip-installed packages, use\n'
+            '\n'
+            '   pipdate{}\n'
+            ).format(name, three, name, three))
 
     messages.append(
         'To disable these checks, '
