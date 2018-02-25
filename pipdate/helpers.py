@@ -5,7 +5,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 import json
 import os
-from sys import platform
+import sys
 
 import appdirs
 
@@ -85,12 +85,12 @@ def needs_checking(name):
 def get_pypi_version(name):
     import requests
     try:
-        r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
+        r = requests.get('https://pypi.python.org/pypi/{}/json'.format(name))
     except requests.ConnectionError:
         raise RuntimeError('Failed connection.')
     if not r.ok:
         raise RuntimeError(
-            'Response code %s from pypi.python.org.' % r.status_code
+            'Response code {} from pypi.python.org.'.format(r.status_code)
             )
     data = r.json()
     return data['info']['version']
@@ -140,32 +140,37 @@ def _get_message(name, iv, uv, semantic_versioning):
     messages.append(
         'Upgrade to   ' +
         BashColor.GREEN +
-        '%s %s' % (name, uv.vstring) +
+        '{} {}'.format(name, uv.vstring) +
         BashColor.END +
-        '    available! (installed: %s)\n' % iv.vstring
+        '    available! (installed: {})\n'.format(iv.vstring)
         )
     # Check if the leftmost nonzero version number changed. If yes, this means
     # an API change according to Semantic Versioning.
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
-        messages.append(
-            (BashColor.YELLOW +
-                '%s\'s API changes in this upgrade. ' +
-                'Changes to your code may be necessary.\n' +
-                BashColor.END
-                ) % name
-            )
-    if platform == 'linux' or platform == 'linux2':
         messages.append((
-            'To upgrade %s with pip, type\n\n'
-            '   pip install -U %s\n\n'
-            'To upgrade _all_ pip-installed packages, use\n\n'
-            '   pipdate/pipdate3\n'
-            ) % (name, name))
+            BashColor.YELLOW +
+            '{}\'s API changes in this upgrade. ' +
+            'Changes to your code may be necessary.\n' +
+            BashColor.END
+            ).format(name))
+
+    three = '3' if sys.version_info >= (3, 0) else ''
+
+    if sys.platform == 'linux' or sys.platform == 'linux2':
+        messages.append((
+            'To upgrade {} with pip, use\n'
+            '\n'
+            '   pip{} install -U {}\n'
+            '\n'
+            'To upgrade _all_ pip-installed packages, use\n'
+            '\n'
+            '   pipdate{}\n'
+            ).format(name, three, name, three))
 
     messages.append(
         'To disable these checks, '
-        'set SecondsBetweenChecks in %s to -1.' % _config_file
+        'set SecondsBetweenChecks in {} to -1.'.format(_config_file)
         )
 
-    return '\n'.join(messages)
+    return '\n'.join(messages) + '\n'
