@@ -85,12 +85,12 @@ def needs_checking(name):
 def get_pypi_version(name):
     import requests
     try:
-        r = requests.get('https://pypi.python.org/pypi/%s/json' % name)
+        r = requests.get('https://pypi.python.org/pypi/{}/json'.format(name))
     except requests.ConnectionError:
         raise RuntimeError('Failed connection.')
     if not r.ok:
         raise RuntimeError(
-            'Response code %s from pypi.python.org.' % r.status_code
+            'Response code {} from pypi.python.org.'.format(r.status_code)
             )
     data = r.json()
     return data['info']['version']
@@ -140,9 +140,9 @@ def _get_message(name, iv, uv, semantic_versioning):
     messages.append(
         'Upgrade to   ' +
         BashColor.GREEN +
-        '%s %s' % (name, uv.vstring) +
+        '{} {}'.format(name, uv.vstring) +
         BashColor.END +
-        '    available! (installed: %s)\n' % iv.vstring
+        '    available! (installed: {})\n'.format(iv.vstring)
         )
     # Check if the leftmost nonzero version number changed. If yes, this means
     # an API change according to Semantic Versioning.
