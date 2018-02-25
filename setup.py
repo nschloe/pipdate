@@ -3,7 +3,7 @@
 import os
 import codecs
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # https://packaging.python.org/single_source_version/
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -27,7 +27,7 @@ def read(fname):
 setup(
     name='pipdate',
     version=about['__version__'],
-    packages=['pipdate'],
+    packages=find_packages(),
     url='https://github.com/nschloe/pipdate',
     download_url='https://pypi.python.org/pypi/pipdate',
     author=about['__author__'],
@@ -36,7 +36,7 @@ setup(
         'appdirs',
         'requests'
         ],
-    description='check for updates on PyPi',
+    description='small pip update helpers',
     long_description=read('README.rst'),
     license=about['__license__'],
     classifiers=[
