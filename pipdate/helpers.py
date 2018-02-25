@@ -148,24 +148,24 @@ def _get_message(name, iv, uv, semantic_versioning):
     # an API change according to Semantic Versioning.
     if semantic_versioning and \
             _change_in_leftmost_nonzero(iv.version, uv.version):
-        messages.append(
-            (BashColor.YELLOW +
-                '%s\'s API changes in this upgrade. ' +
-                'Changes to your code may be necessary.\n' +
-                BashColor.END
-                ) % name
-            )
+        messages.append((
+            BashColor.YELLOW +
+            '{}\'s API changes in this upgrade. ' +
+            'Changes to your code may be necessary.\n' +
+            BashColor.END
+            ).format(name))
+
     if platform == 'linux' or platform == 'linux2':
         messages.append((
-            'To upgrade %s with pip, type\n\n'
-            '   pip install -U %s\n\n'
+            'To upgrade {} with pip, type\n\n'
+            '   pip install -U {}\n\n'
             'To upgrade _all_ pip-installed packages, use\n\n'
             '   pipdate/pipdate3\n'
-            ) % (name, name))
+            ).format(name, name))
 
     messages.append(
         'To disable these checks, '
-        'set SecondsBetweenChecks in %s to -1.' % _config_file
+        'set SecondsBetweenChecks in {} to -1.'.format(_config_file)
         )
 
-    return '\n'.join(messages)
+    return '\n'.join(messages) + '\n'

@@ -41,7 +41,7 @@ To disable these checks, set SecondsBetweenChecks in
 If you guard the check with
 ```python
 if pipdate.needs_checking('matplotlib'):
-    print(pipdate.check('matplotlib', '0.4.5'))
+    print(pipdate.check('matplotlib', '0.4.5'), end='')
 ```
 then it will be performed at most every _k_ seconds, where _k_ is specified
 in the config file `$HOME/.config/pipdate/config.ini`, e.g., once a day
