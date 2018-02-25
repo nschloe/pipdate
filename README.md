@@ -1,6 +1,6 @@
 # pipdate
 
-[![Build Status](https://travis-ci.org/nschloe/pipdate.svg?branch=master)](https://travis-ci.org/nschloe/pipdate)
+[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/pipdate/master.svg)](https://circleci.com/gh/nschloe/pipdate/tree/master)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg)](https://codecov.io/gh/nschloe/pipdate)
 [![Codacy grade](https://img.shields.io/codacy/grade/e2b04ea7e4a74da2a80799056b72b189.svg)](https://app.codacy.com/app/nschloe/pipdate/dashboard)
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
