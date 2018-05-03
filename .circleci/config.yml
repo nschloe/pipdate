@@ -3,20 +3,17 @@ version: 2
 jobs:
 
   build:
-    working_directory: ~/pipdate
+    working_directory: ~/work
     docker:
       - image: ubuntu:18.04
     steps:
       - run: apt-get update
-      - run: apt-get install -y git python3-pip pandoc
+      - run: apt-get install -y git python3-pip
       - run: pip3 install -U pytest pytest-cov pylint
       - checkout
       - run: pip3 install .
       # lint
       - run: pylint pipdate/ test/*.py setup.py
-      # make sure that rst converts correctly
-      - run: pip3 install docutils pygments
-      - run: make README.rst
       # The tests
       - run: cd test/ && MPLBACKEND=Agg pytest --cov pipdate
       # submit to codecov
