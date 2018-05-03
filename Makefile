@@ -6,6 +6,7 @@ default:
 upload: setup.py
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
 	rm -f dist/*
+	python3 setup.py sdist
 	python3 setup.py bdist_wheel --universal
 	twine upload dist/*
 

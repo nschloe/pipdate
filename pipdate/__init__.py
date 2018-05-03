@@ -12,4 +12,4 @@ from .__about__ import (
     )
 
 # pylint: disable=wildcard-import
-from .helpers import *
+from .main import *
