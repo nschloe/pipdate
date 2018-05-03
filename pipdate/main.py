@@ -85,7 +85,12 @@ def needs_checking(name):
 def get_pypi_version(name):
     import requests
     try:
-        r = requests.get('https://pypi.org/pypi/{}/json'.format(name))
+        r = requests.get(
+            'https://pypi.org/pypi/{}/json'.format(name),
+            timeout=1.0
+            )
+    except requests.ConnectTimeout:
+        raise RuntimeError('GET requests time out.')
     except requests.ConnectionError:
         raise RuntimeError('Failed connection.')
     if not r.ok:
