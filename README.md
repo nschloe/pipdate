@@ -23,20 +23,12 @@ print(msg)
 ```
 will print
 ```
-Upgrade to   matplotlib 2.0.0    available! (installed: 0.4.5)
-
-matplotlib's API changes in this upgrade. Changes to your code may be necessary.
-
-To upgrade matplotlib with pip, type
-
-   pip install -U matplotlib
-
-To upgrade _all_ pip-installed packages, use
-
-   pipdate/pipdate3
-
-To disable these checks, set SecondsBetweenChecks in
-/home/jdoe/.config/pipdate/config.ini
+╭──────────────────────────────────────────────╮
+│                                              │
+│        Update available 0.4.5 → 2.2.2        │
+│   Run pip3 install -U matplotlib to update   │
+│                                              │
+╰──────────────────────────────────────────────╯
 ```
 
 If you guard the check with

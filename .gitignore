@@ -7,3 +7,4 @@ dist/
 build/
 .cache/
 *.egg-info/
+.pytest_cache/
