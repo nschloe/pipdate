@@ -5,6 +5,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 import json
 import os
+import re
 import sys
 
 import appdirs
@@ -121,56 +122,119 @@ def _change_in_leftmost_nonzero(a, b):
 
 
 def _get_message(name, iv, uv, semantic_versioning):
-    class BashColor(object):
-        PURPLE = "\033[95m"
-        CYAN = "\033[96m"
-        DARKCYAN = "\033[36m"
-        BLUE = "\033[94m"
-        GREEN = "\033[92m"
-        YELLOW = "\033[93m"
-        RED = "\033[91m"
+    # Inspired by npm's message
+    #
+    #   ╭─────────────────────────────────────╮
+    #   │                                     │
+    #   │   Update available 5.5.1 → 6.1.0    │
+    #   │     Run npm i -g npm to update      │
+    #   │                                     │
+    #   ╰─────────────────────────────────────╯
+    #
+    class BashStyle(object):
+        END = "\033[0m"
         BOLD = "\033[1m"
         UNDERLINE = "\033[4m"
-        END = "\033[0m"
+        BLACK = "\033[30m"
+        GREEN = "\033[32m"
+        YELLOW = "\033[33m"
+        DARKCYAN = "\033[36m"
+        LIGHTGRAY = "\033[37m"
+        RED = "\033[91m"
+        LIGHTYELLOW = "\033[93m"
+        BLUE = "\033[94m"
+        PURPLE = "\033[95m"
+        CYAN = "\033[96m"
+        #
+        GRAY241 = "\033[38;5;241m"
 
     messages = []
     messages.append(
         "Upgrade to   "
-        + BashColor.GREEN
+        + BashStyle.GREEN
         + "{} {}".format(name, uv.vstring)
-        + BashColor.END
+        + BashStyle.END
         + "    available! (installed: {})\n".format(iv.vstring)
     )
-    # Check if the leftmost nonzero version number changed. If yes, this means
-    # an API change according to Semantic Versioning.
-    if semantic_versioning and _change_in_leftmost_nonzero(iv.version, uv.version):
-        messages.append(
-            (
-                BashColor.YELLOW
-                + "{}'s API changes in this upgrade. "
-                + "Changes to your code may be necessary.\n"
-                + BashColor.END
-            ).format(name)
-        )
 
-    three = "3" if sys.version_info >= (3, 0) else ""
+    pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
+
+    message = [
+        "Update available {}{}{} → {}{}{}".format(
+            BashStyle.GRAY241,
+            ".".join(str(k) for k in iv.version),
+            BashStyle.END,
+            BashStyle.GREEN,
+            ".".join(str(k) for k in uv.version),
+            BashStyle.END,
+        )
+    ]
 
     if sys.platform == "linux" or sys.platform == "linux2":
-        messages.append(
-            (
-                "To upgrade {} with pip, use\n"
-                "\n"
-                "   pip{} install -U {}\n"
-                "\n"
-                "To upgrade _all_ pip-installed packages, use\n"
-                "\n"
-                "   pipdate{}\n"
-            ).format(name, three, name, three)
+        message.append(
+            ("Run {}{} install -U {}{} to update").format(
+                BashStyle.DARKCYAN, pip_exe, name, BashStyle.END
+            )
         )
 
-    messages.append(
-        "To disable these checks, "
-        "set SecondsBetweenChecks in {} to -1.".format(_config_file)
-    )
+    # wrap in frame
+    padding_tb = 1
+    padding_lr = 3
 
-    return "\n".join(messages) + "\n"
+    border_color = BashStyle.YELLOW
+
+    # https://stackoverflow.com/a/14693789/353337
+    ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+    text_width = max(len(ansi_escape.sub("", line)) for line in message)
+
+    bc = ("╭", "╮", "╰", "╯", "─", "│")
+
+    out = [
+        border_color
+        + bc[0]
+        + (text_width + 2 * padding_lr) * bc[4]
+        + bc[1]
+        + BashStyle.END
+    ]
+    out += padding_tb * [
+        border_color
+        + bc[5]
+        + (text_width + 2 * padding_lr) * " "
+        + bc[5]
+        + BashStyle.END
+    ]
+
+    for line in message:
+        length = len(ansi_escape.sub("", line))
+        if length < text_width:
+            left = (text_width - length) // 2
+            right = text_width - length - left
+            line = left * " " + line + right * " "
+        out += [
+            border_color
+            + bc[5]
+            + BashStyle.END
+            + padding_lr * " "
+            + line
+            + padding_lr * " "
+            + border_color
+            + bc[5]
+            + BashStyle.END
+        ]
+
+    out += padding_tb * [
+        border_color
+        + bc[5]
+        + (text_width + 2 * padding_lr) * " "
+        + bc[5]
+        + BashStyle.END
+    ]
+    out += [
+        border_color
+        + bc[2]
+        + (text_width + 2 * padding_lr) * bc[4]
+        + bc[3]
+        + BashStyle.END
+    ]
+
+    return "\n".join(out) + "\n"

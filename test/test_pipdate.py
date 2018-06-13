@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+#
 import pipdate
 
 
@@ -8,3 +10,7 @@ def test_pipdate():
     pipdate.check("requests", "0.0.0")
     pipdate.needs_checking("matplotlib")
     return
+
+
+if __name__ == "__main__":
+    test_pipdate()
