@@ -6,6 +6,7 @@ from distutils.version import LooseVersion
 import json
 import os
 import re
+import subprocess
 import sys
 
 import appdirs
@@ -121,6 +122,12 @@ def _change_in_leftmost_nonzero(a, b):
     return leftmost_changed
 
 
+def _is_pip_installed(package_name):
+    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
+    installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
+    return package_name in installed_packages
+
+
 def _get_message(name, iv, uv, semantic_versioning):
     # Inspired by npm's message
     #
@@ -170,7 +177,7 @@ def _get_message(name, iv, uv, semantic_versioning):
         )
     ]
 
-    if sys.platform == "linux" or sys.platform == "linux2":
+    if _is_pip_installed(name):
         message.append(
             ("Run {}{} install -U {}{} to update").format(
                 BashStyle.DARKCYAN, pip_exe, name, BashStyle.END
