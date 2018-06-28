@@ -13,7 +13,7 @@ pipdate is a collection of small pip update helpers. The commands
 pipdate
 pipdate3
 ```
-updates _all_ your pip{3}-installed packages.
+updates _all_ your pip{3}-installed packages. (Only works on Unix.)
 
 There's a Python interface as well that can be used for update notifications.
 This
