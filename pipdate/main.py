@@ -162,15 +162,6 @@ def _get_message(name, iv, uv, semantic_versioning):
         #
         GRAY241 = "\033[38;5;241m"
 
-    messages = []
-    messages.append(
-        "Upgrade to   "
-        + BashStyle.GREEN
-        + "{} {}".format(name, uv.vstring)
-        + BashStyle.END
-        + "    available! (installed: {})\n".format(iv.vstring)
-    )
-
     pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
 
     message = [
