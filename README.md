@@ -3,7 +3,6 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/nschloe/pipdate/master.svg)](https://circleci.com/gh/nschloe/pipdate/tree/master)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg)](https://codecov.io/gh/nschloe/pipdate)
-[![Codacy grade](https://img.shields.io/codacy/grade/e2b04ea7e4a74da2a80799056b72b189.svg)](https://app.codacy.com/app/nschloe/pipdate/dashboard)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?logo=github&label=Stars)](https://github.com/nschloe/pipdate)
