@@ -162,13 +162,21 @@ def _get_message(name, iv, uv, semantic_versioning):
         #
         GRAY241 = "\033[38;5;241m"
 
+    if sys.stdout.encoding == "UTF-8":
+        right_arrow = "\u2192"
+        bc = ("╭", "╮", "╰", "╯", "─", "│")
+    else:
+        right_arrow = "->"
+        bc = ("-", "-", "-", "-", "-", "|")
+
     pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
 
     message = [
-        "Update available {}{}{} → {}{}{}".format(
+        "Update available {}{}{} {} {}{}{}".format(
             BashStyle.GRAY241,
             ".".join(str(k) for k in iv.version),
             BashStyle.END,
+            right_arrow,
             BashStyle.GREEN,
             ".".join(str(k) for k in uv.version),
             BashStyle.END,
@@ -193,8 +201,6 @@ def _get_message(name, iv, uv, semantic_versioning):
     # https://stackoverflow.com/a/14693789/353337
     ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
     text_width = max(len(ansi_escape.sub("", line)) for line in message)
-
-    bc = ("╭", "╮", "╰", "╯", "─", "│")
 
     out = [
         border_color
