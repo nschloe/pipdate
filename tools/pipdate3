@@ -1,4 +1,15 @@
 #!/bin/sh
-
-# http://stackoverflow.com/a/3452888/353337
-pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
+echo -n "Upgrading PIP packages..."
+PACKAGE_LIST=$(pip3 list --outdated --format freeze | grep -v '^\-e' | cut -d = -f 1)
+PIP_UPDATE_CMD="pip3 install --quiet --quiet --quiet --upgrade"
+for P in ${PACKAGE_LIST} ; do
+  if echo "${P}" | grep "^pip$" ; then
+    echo -n "."
+    ${PIP_UPDATE_CMD} pip 2>/dev/null
+  fi
+done
+for P in ${PACKAGE_LIST} ; do
+  echo -n "."
+  ${PIP_UPDATE_CMD} ${P} 2>/dev/null
+done
+echo "."
