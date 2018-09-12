@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-import os
 import codecs
+import os
+import sys
 
 from setuptools import setup, find_packages
 
@@ -39,5 +40,11 @@ setup(
         "Topic :: Software Development :: Version Control",
         "Topic :: System :: Software Distribution",
     ],
-    scripts=["tools/pipdate", "tools/pipdate3"],
+    entry_points={
+        "console_scripts": [
+            "{} = pipdate.cli:update".format(
+                "pipdate" if sys.version_info[0] < 3 else "pipdate3"
+            )
+        ]
+    },
 )
