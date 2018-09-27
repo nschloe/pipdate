@@ -5,9 +5,10 @@ import sys
 
 
 def update_all(user):
-    out = subprocess.check_output(
-        [sys.executable, "-m", "pip", "list", "--outdated"]
-    ).decode("utf-8")
+    cmd = [sys.executable, "-m", "pip", "list", "--outdated"]
+    if user:
+        cmd += ["--user"]
+    out = subprocess.check_output(cmd).decode("utf-8")
     # The first two lines are
     # ```
     # Package               Version     Latest    Type
