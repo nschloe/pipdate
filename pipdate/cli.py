@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-from __future__ import print_function
-
 import argparse
 import sys
 
@@ -12,9 +8,7 @@ from .update import update_all
 def update(argv=None):
     parser = _get_parser()
     args = parser.parse_args(argv)
-
     update_all(args.user)
-    return
 
 
 def _get_parser():

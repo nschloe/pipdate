@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 import subprocess
 import sys
 
@@ -33,4 +31,3 @@ def update_all(user):
             subprocess.check_output(cmd + [name])
         except subprocess.CalledProcessError:
             pass
-    return

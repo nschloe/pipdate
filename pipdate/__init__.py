@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 """Check for updates on PyPi.
 """
 
