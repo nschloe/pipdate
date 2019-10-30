@@ -24,7 +24,7 @@ def _get_parser():
         "--user",
         action="store_true",
         default=False,
-        help="Update packages in the users's home folder",
+        help="Update packages in the user's home folder",
     )
 
     parser.add_argument(
