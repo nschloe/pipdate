@@ -1,11 +1,11 @@
 # pipdate
 
-[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/pipdate/master.svg)](https://circleci.com/gh/nschloe/pipdate/tree/master)
-[![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg)](https://codecov.io/gh/nschloe/pipdate)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg)](https://pypi.python.org/pypi/pipdate)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/pipdate)
-[![PyPi downloads](https://img.shields.io/pypi/dm/pipdate.svg)](https://pypistats.org/packages/pipdate)
+[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/pipdate/master.svg?style=flat-square)](https://circleci.com/gh/nschloe/pipdate/tree/master)
+[![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg?style=flat-square)](https://codecov.io/gh/nschloe/pipdate)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg?style=flat-square)](https://pypi.python.org/pypi/pipdate)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/pipdate)
+[![PyPi downloads](https://img.shields.io/pypi/dm/pipdate.svg?style=flat-square)](https://pypistats.org/packages/pipdate)
 
 pipdate is a collection of small pip update helpers. The commands
 ```
