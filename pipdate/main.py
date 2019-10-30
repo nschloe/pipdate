@@ -1,10 +1,10 @@
-from datetime import datetime
-from distutils.version import LooseVersion
 import json
 import os
 import re
 import subprocess
 import sys
+from datetime import datetime
+from distutils.version import LooseVersion
 
 import appdirs
 
