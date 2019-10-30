@@ -48,7 +48,7 @@ their own modules.
 ### Installation
 
 pipdate is [available from the Python Package
-Index](https://pypi.python.org/pypi/pipdate/), so simply type
+Index](https://pypi.org/project/pipdate/), so simply type
 ```
 pip install pipdate
 ```
