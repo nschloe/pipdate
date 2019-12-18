@@ -13,7 +13,7 @@ def update_all(user):
     # --------------------- ----------- --------- -----
     # ```
     out = out.split("\n")[2:-1]
-    out = [tuple(item.split()[:-1]) for item in out]
+    out = [tuple(item.split()[:3]) for item in out]
 
     # move pip itself to the top of the list
     packages = [item[0] for item in out]
