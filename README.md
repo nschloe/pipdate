@@ -25,8 +25,8 @@ will print
 ```
 ╭──────────────────────────────────────────────╮
 │                                              │
-│        Update available 0.4.5 → 2.2.2        │
-│   Run pip3 install -U matplotlib to update   │
+│       Update available 0.4.5 → 2.2.2         │
+│   Run pip install -U matplotlib to update    │
 │                                              │
 ╰──────────────────────────────────────────────╯
 ```
