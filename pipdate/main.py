@@ -19,7 +19,7 @@ if not os.path.exists(_config_dir):
     os.makedirs(_config_dir)
 _config_file = os.path.join(_config_dir, "config.ini")
 
-_log_dir = appdirs.user_log_dir("pipdate", u"Nico Schlömer")
+_log_dir = appdirs.user_log_dir("pipdate", "Nico Schlömer")
 if not os.path.exists(_log_dir):
     os.makedirs(_log_dir)
 _log_file = os.path.join(_log_dir, "times.log")
@@ -83,13 +83,13 @@ def get_pypi_version(name):
     import requests
 
     try:
-        r = requests.get("https://pypi.org/pypi/{}/json".format(name), timeout=1.0)
+        r = requests.get(f"https://pypi.org/pypi/{name}/json", timeout=1.0)
     except requests.ConnectTimeout:
         raise RuntimeError("GET requests time out.")
     except requests.ConnectionError:
         raise RuntimeError("Failed connection.")
     if not r.ok:
-        raise RuntimeError("Response code {} from pypi.org.".format(r.status_code))
+        raise RuntimeError(f"Response code {r.status_code} from pypi.org.")
     data = r.json()
     return data["info"]["version"]
 
@@ -142,7 +142,7 @@ def _get_message(name, iv, uv, semantic_versioning):
     #   │                                     │
     #   ╰─────────────────────────────────────╯
     #
-    class BashStyle(object):
+    class BashStyle:
         END = "\033[0m"
         BOLD = "\033[1m"
         UNDERLINE = "\033[4m"

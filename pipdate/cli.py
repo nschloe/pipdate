@@ -25,7 +25,7 @@ def _get_parser():
         "--version",
         "-v",
         action="version",
-        version="%(prog)s {}, Python {}".format(__version__, sys.version),
+        version=f"%(prog)s {__version__}, Python {sys.version}",
         help="display version information",
     )
     return parser

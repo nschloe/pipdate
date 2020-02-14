@@ -26,7 +26,7 @@ def update_all(user):
     cmd += ["--upgrade"]
 
     for name, old_version, new_version in out:
-        print("{} {} -> {}...".format(name, old_version, new_version))
+        print(f"{name} {old_version} -> {new_version}...")
         try:
             subprocess.check_output(cmd + [name])
         except subprocess.CalledProcessError:
