@@ -1,12 +1,12 @@
 import json
 import os
 import re
-import subprocess
 import sys
 from datetime import datetime
 from distutils.version import LooseVersion
 
 import appdirs
+import pkg_resources
 
 try:
     import configparser
@@ -19,7 +19,7 @@ if not os.path.exists(_config_dir):
     os.makedirs(_config_dir)
 _config_file = os.path.join(_config_dir, "config.ini")
 
-_log_dir = appdirs.user_log_dir("pipdate", u"Nico Schlömer")
+_log_dir = appdirs.user_log_dir("pipdate", "Nico Schlömer")
 if not os.path.exists(_log_dir):
     os.makedirs(_log_dir)
 _log_file = os.path.join(_log_dir, "times.log")
@@ -83,13 +83,13 @@ def get_pypi_version(name):
     import requests
 
     try:
-        r = requests.get("https://pypi.org/pypi/{}/json".format(name), timeout=1.0)
+        r = requests.get(f"https://pypi.org/pypi/{name}/json", timeout=1.0)
     except requests.ConnectTimeout:
         raise RuntimeError("GET requests time out.")
     except requests.ConnectionError:
         raise RuntimeError("Failed connection.")
     if not r.ok:
-        raise RuntimeError("Response code {} from pypi.org.".format(r.status_code))
+        raise RuntimeError(f"Response code {r.status_code} from pypi.org.")
     data = r.json()
     return data["info"]["version"]
 
@@ -119,17 +119,12 @@ def _change_in_leftmost_nonzero(a, b):
     return leftmost_changed
 
 
-def _has_pip():
-    pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
-
+def _is_pip_installed(name):
     try:
-        subprocess.check_output(pip_exe)
+        installer = pkg_resources.get_distribution(name).get_metadata("INSTALLER")
     except FileNotFoundError:
-        has_pip = False
-    else:
-        has_pip = True
-
-    return has_pip
+        return False
+    return installer.strip() == "pip"
 
 
 def _get_message(name, iv, uv, semantic_versioning):
@@ -142,7 +137,7 @@ def _get_message(name, iv, uv, semantic_versioning):
     #   │                                     │
     #   ╰─────────────────────────────────────╯
     #
-    class BashStyle(object):
+    class BashStyle:
         END = "\033[0m"
         BOLD = "\033[1m"
         UNDERLINE = "\033[4m"
@@ -159,14 +154,14 @@ def _get_message(name, iv, uv, semantic_versioning):
         #
         GRAY241 = "\033[38;5;241m"
 
-    if sys.stdout.encoding == "UTF-8":
+    if sys.stdout.encoding.lower() in ("utf-8", "utf8"):
         right_arrow = "\u2192"
         bc = ("╭", "╮", "╰", "╯", "─", "│")
     else:
         right_arrow = "->"
         bc = ("-", "-", "-", "-", "-", "|")
 
-    pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
+    pip_exe = "pip"
 
     message = [
         "Update available {}{}{} {} {}{}{}".format(
@@ -180,7 +175,7 @@ def _get_message(name, iv, uv, semantic_versioning):
         )
     ]
 
-    if _has_pip():
+    if _is_pip_installed(name):
         message.append(
             ("Run {}{} install -U {}{} to update").format(
                 BashStyle.DARKCYAN, pip_exe, name, BashStyle.END

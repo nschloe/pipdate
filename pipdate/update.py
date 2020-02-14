@@ -2,10 +2,8 @@ import subprocess
 import sys
 
 
-def update_all(user):
+def update_all():
     cmd = [sys.executable, "-m", "pip", "list", "--outdated"]
-    if user:
-        cmd += ["--user"]
     out = subprocess.check_output(cmd).decode("utf-8")
     # The first two lines are
     # ```
@@ -21,12 +19,10 @@ def update_all(user):
         out.insert(0, out.pop(packages.index("pip")))
 
     cmd = [sys.executable, "-m", "pip", "install"]
-    if user:
-        cmd += ["--user"]
     cmd += ["--upgrade"]
 
     for name, old_version, new_version in out:
-        print("{} {} -> {}...".format(name, old_version, new_version))
+        print(f"{name} {old_version} -> {new_version}...")
         try:
             subprocess.check_output(cmd + [name])
         except subprocess.CalledProcessError:
