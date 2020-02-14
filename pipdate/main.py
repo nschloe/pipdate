@@ -7,6 +7,7 @@ from datetime import datetime
 from distutils.version import LooseVersion
 
 import appdirs
+import pkg_resources
 
 try:
     import configparser
@@ -119,17 +120,12 @@ def _change_in_leftmost_nonzero(a, b):
     return leftmost_changed
 
 
-def _has_pip():
-    pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
-
+def _is_pip_installed(name):
     try:
-        subprocess.check_output(pip_exe)
+        installer = pkg_resources.get_distribution(name).get_metadata("INSTALLER")
     except FileNotFoundError:
-        has_pip = False
-    else:
-        has_pip = True
-
-    return has_pip
+        return False
+    return installer.strip() == "pip"
 
 
 def _get_message(name, iv, uv, semantic_versioning):
@@ -159,14 +155,14 @@ def _get_message(name, iv, uv, semantic_versioning):
         #
         GRAY241 = "\033[38;5;241m"
 
-    if sys.stdout.encoding == "UTF-8":
+    if sys.stdout.encoding.lower() in ("utf-8", "utf8"):
         right_arrow = "\u2192"
         bc = ("╭", "╮", "╰", "╯", "─", "│")
     else:
         right_arrow = "->"
         bc = ("-", "-", "-", "-", "-", "|")
 
-    pip_exe = "pip3" if sys.version_info > (3, 0) else "pip"
+    pip_exe = "pip"
 
     message = [
         "Update available {}{}{} {} {}{}{}".format(
@@ -180,7 +176,7 @@ def _get_message(name, iv, uv, semantic_versioning):
         )
     ]
 
-    if _has_pip():
+    if _is_pip_installed(name):
         message.append(
             ("Run {}{} install -U {}{} to update").format(
                 BashStyle.DARKCYAN, pip_exe, name, BashStyle.END
