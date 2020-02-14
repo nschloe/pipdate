@@ -6,7 +6,7 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
-      - run: pip3 install -U black flake8 --user
+      - run: pip3 install black flake8 --user
       - run: black --check .
       - run: flake8 .
   build:
@@ -14,7 +14,8 @@ jobs:
     docker:
       - image: circleci/python:3.7
     steps:
-      - run: pip install -U pytest pytest-cov --user
+      - run: pip install matplotlib --user
+      - run: pip install pytest pytest-cov --user
       - checkout
       - run: pip install . --user
       # The tests
