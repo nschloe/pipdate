@@ -1,5 +1,4 @@
 import os
-import sys
 
 from setuptools import find_packages, setup
 
@@ -15,6 +14,10 @@ setup(
     version=about["__version__"],
     packages=find_packages(),
     url="https://github.com/nschloe/pipdate",
+    project_urls={
+        "Code": "https://github.com/nschloe/pipdate",
+        "Issue tracker": "https://github.com/nschloe/pipdate/issues",
+    },
     author=about["__author__"],
     author_email=about["__email__"],
     install_requires=["appdirs", "requests"],
@@ -34,11 +37,5 @@ setup(
         "Topic :: Software Development :: Version Control",
         "Topic :: System :: Software Distribution",
     ],
-    entry_points={
-        "console_scripts": [
-            "{} = pipdate.cli:update".format(
-                "pipdate" if sys.version_info[0] < 3 else "pipdate3"
-            )
-        ]
-    },
+    entry_points={"console_scripts": ["pipdate = pipdate.cli:update"]},
 )
