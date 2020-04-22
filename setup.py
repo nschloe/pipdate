@@ -1,41 +1,4 @@
-import os
+from setuptools import setup
 
-from setuptools import find_packages, setup
-
-# https://packaging.python.org/single_source_version/
-base_dir = os.path.abspath(os.path.dirname(__file__))
-about = {}
-with open(os.path.join(base_dir, "pipdate", "__about__.py"), "rb") as f:
-    exec(f.read(), about)
-
-
-setup(
-    name="pipdate",
-    version=about["__version__"],
-    packages=find_packages(),
-    url="https://github.com/nschloe/pipdate",
-    project_urls={
-        "Code": "https://github.com/nschloe/pipdate",
-        "Issue tracker": "https://github.com/nschloe/pipdate/issues",
-    },
-    author=about["__author__"],
-    author_email=about["__email__"],
-    install_requires=["appdirs", "requests"],
-    python_requires=">=3.6",
-    description="pip update helpers",
-    long_description=open("README.md").read(),
-    long_description_content_type="text/markdown",
-    license=about["__license__"],
-    classifiers=[
-        about["__status__"],
-        about["__license__"],
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Topic :: Software Development",
-        "Topic :: Software Development :: Version Control",
-        "Topic :: System :: Software Distribution",
-    ],
-    entry_points={"console_scripts": ["pipdate = pipdate.__main__:update"]},
-)
+if __name__ == "__main__":
+    setup()
