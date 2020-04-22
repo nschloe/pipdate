@@ -37,5 +37,5 @@ setup(
         "Topic :: Software Development :: Version Control",
         "Topic :: System :: Software Distribution",
     ],
-    entry_points={"console_scripts": ["pipdate = pipdate.cli:update"]},
+    entry_points={"console_scripts": ["pipdate = pipdate.__main__:update"]},
 )
