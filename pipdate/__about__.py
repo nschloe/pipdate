@@ -1,6 +1,10 @@
-__author__ = "Nico Schlömer"
-__email__ = "nico.schloemer@gmail.com"
-__copyright__ = f"Copyright (c) 2017-2020, {__author__} <{__email__}>"
-__license__ = "License :: OSI Approved :: MIT License"
-__version__ = "0.4.1"
-__status__ = "Development Status :: 5 - Production/Stable"
+try:
+    # Python 3.8
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata
+
+try:
+    __version__ = metadata.version("pipdate")
+except Exception:
+    __version__ = "unknown"

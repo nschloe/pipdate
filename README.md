@@ -9,8 +9,9 @@
 [![PyPi downloads](https://img.shields.io/pypi/dm/pipdate.svg?style=flat-square)](https://pypistats.org/packages/pipdate)
 
 pipdate is a collection of small pip update helpers. The command
-```
+```bash
 pipdate
+# or python3.8 -m pipdate
 ```
 updates _all_ your pip-installed packages. (Only works on Unix.)
 
@@ -62,4 +63,4 @@ pytest
 
 ### License
 
-pipdate is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+This software is published under the [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
