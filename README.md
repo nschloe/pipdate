@@ -9,8 +9,9 @@
 [![PyPi downloads](https://img.shields.io/pypi/dm/pipdate.svg?style=flat-square)](https://pypistats.org/packages/pipdate)
 
 pipdate is a collection of small pip update helpers. The command
-```
+```bash
 pipdate
+# or python3.8 -m pipdate
 ```
 updates _all_ your pip-installed packages. (Only works on Unix.)
 
