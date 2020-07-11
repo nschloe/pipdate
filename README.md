@@ -32,6 +32,8 @@ will print
 │                                              │
 ╰──────────────────────────────────────────────╯
 ```
+This can, for example, be used by package authors to notify users of upgrades of
+their own packages.
 
 If you guard the check with
 ```python
@@ -44,8 +46,6 @@ in the config file `$HOME/.config/pipdate/config.ini`, e.g., once a day
 [DEFAULT]
 secondsbetweenchecks = 86400
 ```
-This can, for example, be used by module authors to notify users of upgrades of
-their own modules.
 
 ### Installation
 
@@ -63,5 +63,4 @@ pytest
 ```
 
 ### License
-
 This software is published under the [GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
