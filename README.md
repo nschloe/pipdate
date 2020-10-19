@@ -1,13 +1,15 @@
 # pipdate
 
-[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/pipdate/master.svg?style=flat-square)](https://circleci.com/gh/nschloe/pipdate/tree/master)
-[![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg?style=flat-square)](https://codecov.io/gh/nschloe/pipdate)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/pipdate.svg?style=flat-square)](https://pypi.org/pypi/pipdate/)
-[![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg?style=flat-square)](https://pypi.python.org/pypi/pipdate)
+[![PyPi Version](https://img.shields.io/pypi/v/pipdate.svg?style=flat-square)](https://pypi.org/project/pipdate)
 [![Anaconda Cloud](https://anaconda.org/conda-forge/pipdate/badges/version.svg?=style=flat-square)](https://anaconda.org/conda-forge/pipdate/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/pipdate.svg?style=flat-square)](https://pypi.org/pypi/pipdate/)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/pipdate.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/pipdate)
 [![PyPi downloads](https://img.shields.io/pypi/dm/pipdate.svg?style=flat-square)](https://pypistats.org/packages/pipdate)
+
+[![gh-actions](https://img.shields.io/github/workflow/status/nschloe/pipdate/ci?style=flat-square)](https://github.com/nschloe/pipdate/actions?query=workflow%3Aci)
+[![codecov](https://img.shields.io/codecov/c/github/nschloe/pipdate.svg?style=flat-square)](https://codecov.io/gh/nschloe/pipdate)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+
 
 pipdate is a collection of small pip update helpers. The command
 ```bash
@@ -24,6 +26,8 @@ msg = pipdate.check("matplotlib", "0.4.5")
 print(msg)
 ```
 will print
+<img src="https://github.com/nschloe/pipdate/blob/assets/pipdate.png?raw=true"   width="40%">
+<!--
 ```
 ╭──────────────────────────────────────────────╮
 │                                              │
@@ -32,6 +36,7 @@ will print
 │                                              │
 ╰──────────────────────────────────────────────╯
 ```
+-->
 This can, for example, be used by package authors to notify users of upgrades of
 their own packages.
 

@@ -3,7 +3,7 @@ VERSION=$(shell python3 -c "from configparser import ConfigParser; p = ConfigPar
 default:
 	@echo "\"make publish\"?"
 
-upload: setup.py
+upload:
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
 	rm -f dist/*
 	# https://stackoverflow.com/a/58756491/353337
