@@ -43,7 +43,7 @@ def _get_seconds_between_checks():
 def _get_last_check_time(name):
     if not os.path.exists(_log_file):
         return None
-    with open(_log_file, "r") as handle:
+    with open(_log_file) as handle:
         d = json.load(handle)
         if name in d:
             last_checked = datetime.strptime(d[name], "%Y-%m-%d %H:%M:%S")
@@ -54,7 +54,7 @@ def _get_last_check_time(name):
 
 def _log_time(name, time):
     if os.path.exists(_log_file):
-        with open(_log_file, "r") as handle:
+        with open(_log_file) as handle:
             d = json.load(handle)
     else:
         d = {}
