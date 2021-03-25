@@ -22,6 +22,7 @@ There's a Python interface as well that can be used for update notifications.
 This
 ```python
 import pipdate
+
 msg = pipdate.check("matplotlib", "0.4.5")
 print(msg)
 ```
@@ -42,6 +43,8 @@ their own packages.
 
 If you guard the check with
 ```python
+import pipdate
+
 if pipdate.needs_checking("matplotlib"):
     print(pipdate.check("matplotlib", "0.4.5"), end="")
 ```
