@@ -43,6 +43,8 @@ their own packages.
 
 If you guard the check with
 ```python
+import pipdate
+
 if pipdate.needs_checking("matplotlib"):
     print(pipdate.check("matplotlib", "0.4.5"), end="")
 ```
