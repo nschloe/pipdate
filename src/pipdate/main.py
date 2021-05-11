@@ -1,3 +1,4 @@
+import configparser
 import json
 import os
 import re
@@ -7,12 +8,6 @@ from distutils.version import LooseVersion
 
 import appdirs
 import pkg_resources
-
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
-
 
 _config_dir = appdirs.user_config_dir("pipdate")
 if not os.path.exists(_config_dir):
