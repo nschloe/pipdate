@@ -89,7 +89,7 @@ def get_pypi_version(name):
     return data["info"]["version"]
 
 
-def check(name, installed_version, semantic_versioning=True):
+def check(name, installed_version):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
@@ -101,7 +101,7 @@ def check(name, installed_version, semantic_versioning=True):
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
     if iv < uv:
-        return _get_message(name, iv, uv, semantic_versioning=semantic_versioning)
+        return _get_message(name, iv, uv)
 
     return ""
 
@@ -124,7 +124,7 @@ def _is_pip_installed(name):
     return installer.strip() == "pip"
 
 
-def _get_message(name, iv, uv, semantic_versioning):
+def _get_message(name, iv, uv):
     # Inspired by npm's message
     #
     #   ╭─────────────────────────────────────╮
