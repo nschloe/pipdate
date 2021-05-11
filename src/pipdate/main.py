@@ -1,3 +1,4 @@
+import configparser
 import json
 import os
 import re
@@ -7,12 +8,6 @@ from distutils.version import LooseVersion
 
 import appdirs
 import pkg_resources
-
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
-
 
 _config_dir = appdirs.user_config_dir("pipdate")
 if not os.path.exists(_config_dir):
@@ -94,29 +89,31 @@ def get_pypi_version(name):
     return data["info"]["version"]
 
 
-def check(name, installed_version, semantic_versioning=True):
+def check(name, installed_version):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
         return ""
     _log_time(name, datetime.now())
 
+    print(upstream_version)
+
     iv = LooseVersion(installed_version)
     uv = LooseVersion(upstream_version)
     if iv < uv:
-        return _get_message(name, iv, uv, semantic_versioning=semantic_versioning)
+        return _get_message(name, iv, uv)
 
     return ""
 
 
-def _change_in_leftmost_nonzero(a, b):
-    leftmost_changed = False
-    for k in range(min(len(a), len(b))):
-        if a[k] == 0 and b[k] == 0:
-            continue
-        leftmost_changed = a[k] != b[k]
-        break
-    return leftmost_changed
+# def _change_in_leftmost_nonzero(a, b):
+#     leftmost_changed = False
+#     for k in range(min(len(a), len(b))):
+#         if a[k] == 0 and b[k] == 0:
+#             continue
+#         leftmost_changed = a[k] != b[k]
+#         break
+#     return leftmost_changed
 
 
 def _is_pip_installed(name):
@@ -127,7 +124,7 @@ def _is_pip_installed(name):
     return installer.strip() == "pip"
 
 
-def _get_message(name, iv, uv, semantic_versioning):
+def _get_message(name, iv, uv):
     # Inspired by npm's message
     #
     #   ╭─────────────────────────────────────╮
@@ -154,7 +151,7 @@ def _get_message(name, iv, uv, semantic_versioning):
         #
         GRAY241 = "\033[38;5;241m"
 
-    if sys.stdout.encoding.lower() in ("utf-8", "utf8"):
+    if sys.stdout.encoding is None or sys.stdout.encoding.lower() in ("utf-8", "utf8"):
         right_arrow = "\u2192"
         bc = ("╭", "╮", "╰", "╯", "─", "│")
     else:
