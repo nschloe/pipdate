@@ -14,7 +14,7 @@
 pipdate is a collection of small pip update helpers. The command
 ```bash
 pipdate
-# or python3.8 -m pipdate
+# or python3.9 -m pipdate
 ```
 updates _all_ your pip-installed packages. (Only works on Unix.)
 
@@ -28,7 +28,7 @@ print(msg)
 ```
 will print
 
-<img src="https://github.com/nschloe/pipdate/blob/assets/pipdate.png?raw=true"   width="40%">
+<img src="https://github.com/nschloe/pipdate/blob/assets/pipdate.png?raw=true" width="40%"/>
 
 <!--
 ```
