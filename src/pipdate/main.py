@@ -1,7 +1,7 @@
 import configparser
 import json
-import os
 from datetime import datetime
+from pathlib import Path
 
 import appdirs
 import pkg_resources
@@ -9,19 +9,19 @@ from packaging import version
 from rich.console import Console
 from rich.panel import Panel
 
-_config_dir = appdirs.user_config_dir("pipdate")
-if not os.path.exists(_config_dir):
-    os.makedirs(_config_dir)
-_config_file = os.path.join(_config_dir, "config.ini")
+_config_dir = Path(appdirs.user_config_dir("pipdate"))
+if not _config_dir.exists():
+    _config_dir.mkdir()
+_config_file = _config_dir / "config.ini"
 
-_log_dir = appdirs.user_log_dir("pipdate", "Nico Schlömer")
-if not os.path.exists(_log_dir):
-    os.makedirs(_log_dir)
-_log_file = os.path.join(_log_dir, "times.log")
+_log_dir = Path(appdirs.user_log_dir("pipdate", "Nico Schlömer"))
+if not _log_dir.exists():
+    _log_dir.mkdir()
+_log_file = _log_dir / "times.log"
 
 
 def _get_seconds_between_checks():
-    if not os.path.exists(_config_file):
+    if not _config_file.exists():
         # add default config
         parser = configparser.ConfigParser()
         parser.set("DEFAULT", "SecondsBetweenChecks", str(24 * 60 * 60))
@@ -36,7 +36,7 @@ def _get_seconds_between_checks():
 
 
 def _get_last_check_time(name):
-    if not os.path.exists(_log_file):
+    if not _log_file.exists():
         return None
     with open(_log_file) as handle:
         d = json.load(handle)
@@ -48,7 +48,7 @@ def _get_last_check_time(name):
 
 
 def _log_time(name, time):
-    if os.path.exists(_log_file):
+    if _log_file.exists():
         with open(_log_file) as handle:
             d = json.load(handle)
     else:
@@ -79,7 +79,7 @@ def get_pypi_version(name):
 
     try:
         r = requests.get(f"https://pypi.org/pypi/{name}/json", timeout=1.0)
-    except requests.ConnectTimeout:
+    except requests.Timeout:
         raise RuntimeError("GET requests time out.")
     except requests.ConnectionError:
         raise RuntimeError("Failed connection.")
