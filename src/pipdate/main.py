@@ -161,11 +161,11 @@ def _get_message(name, iv, uv):
     message = [
         "Update available {}{}{} {} {}{}{}".format(
             BashStyle.GRAY241,
-            ".".join(str(k) for k in iv.version),
+            iv,
             BashStyle.END,
             right_arrow,
             BashStyle.GREEN,
-            ".".join(str(k) for k in uv.version),
+            uv,
             BashStyle.END,
         )
     ]
