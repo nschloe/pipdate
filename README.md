@@ -23,8 +23,7 @@ This
 ```python
 import pipdate
 
-msg = pipdate.check("matplotlib", "0.4.5")
-print(msg)
+pipdate.check("matplotlib", "0.4.5")
 ```
 will print
 

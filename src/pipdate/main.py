@@ -1,27 +1,28 @@
 import configparser
 import json
-import os
-import re
-import sys
 from datetime import datetime
-from distutils.version import LooseVersion
+from pathlib import Path
 
 import appdirs
 import pkg_resources
+from packaging import version
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
 
-_config_dir = appdirs.user_config_dir("pipdate")
-if not os.path.exists(_config_dir):
-    os.makedirs(_config_dir)
-_config_file = os.path.join(_config_dir, "config.ini")
+_config_dir = Path(appdirs.user_config_dir("pipdate"))
+if not _config_dir.exists():
+    _config_dir.mkdir(parents=True)
+_config_file = _config_dir / "config.ini"
 
-_log_dir = appdirs.user_log_dir("pipdate", "Nico Schlömer")
-if not os.path.exists(_log_dir):
-    os.makedirs(_log_dir)
-_log_file = os.path.join(_log_dir, "times.log")
+_log_dir = Path(appdirs.user_log_dir("pipdate", "Nico Schlömer"))
+if not _log_dir.exists():
+    _log_dir.mkdir(parents=True)
+_log_file = _log_dir / "times.log"
 
 
 def _get_seconds_between_checks():
-    if not os.path.exists(_config_file):
+    if not _config_file.exists():
         # add default config
         parser = configparser.ConfigParser()
         parser.set("DEFAULT", "SecondsBetweenChecks", str(24 * 60 * 60))
@@ -36,7 +37,7 @@ def _get_seconds_between_checks():
 
 
 def _get_last_check_time(name):
-    if not os.path.exists(_log_file):
+    if not _log_file.exists():
         return None
     with open(_log_file) as handle:
         d = json.load(handle)
@@ -48,7 +49,7 @@ def _get_last_check_time(name):
 
 
 def _log_time(name, time):
-    if os.path.exists(_log_file):
+    if _log_file.exists():
         with open(_log_file) as handle:
             d = json.load(handle)
     else:
@@ -57,7 +58,6 @@ def _log_time(name, time):
     d[name] = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(_log_file, "w") as handle:
         json.dump(d, handle)
-    return
 
 
 def needs_checking(name):
@@ -79,7 +79,7 @@ def get_pypi_version(name):
 
     try:
         r = requests.get(f"https://pypi.org/pypi/{name}/json", timeout=1.0)
-    except requests.ConnectTimeout:
+    except requests.Timeout:
         raise RuntimeError("GET requests time out.")
     except requests.ConnectionError:
         raise RuntimeError("Failed connection.")
@@ -93,27 +93,13 @@ def check(name, installed_version):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
-        return ""
+        return
     _log_time(name, datetime.now())
 
-    print(upstream_version)
+    if version.parse(installed_version) >= version.parse(upstream_version):
+        return
 
-    iv = LooseVersion(installed_version)
-    uv = LooseVersion(upstream_version)
-    if iv < uv:
-        return _get_message(name, iv, uv)
-
-    return ""
-
-
-# def _change_in_leftmost_nonzero(a, b):
-#     leftmost_changed = False
-#     for k in range(min(len(a), len(b))):
-#         if a[k] == 0 and b[k] == 0:
-#             continue
-#         leftmost_changed = a[k] != b[k]
-#         break
-#     return leftmost_changed
+    return _print_message(name, installed_version, upstream_version)
 
 
 def _is_pip_installed(name):
@@ -124,7 +110,7 @@ def _is_pip_installed(name):
     return installer.strip() == "pip"
 
 
-def _get_message(name, iv, uv):
+def _print_message(name, iv, uv):
     # Inspired by npm's message
     #
     #   ╭─────────────────────────────────────╮
@@ -134,109 +120,16 @@ def _get_message(name, iv, uv):
     #   │                                     │
     #   ╰─────────────────────────────────────╯
     #
-    class BashStyle:
-        END = "\033[0m"
-        BOLD = "\033[1m"
-        UNDERLINE = "\033[4m"
-        BLACK = "\033[30m"
-        GREEN = "\033[32m"
-        YELLOW = "\033[33m"
-        DARKCYAN = "\033[36m"
-        LIGHTGRAY = "\033[37m"
-        RED = "\033[91m"
-        LIGHTYELLOW = "\033[93m"
-        BLUE = "\033[94m"
-        PURPLE = "\033[95m"
-        CYAN = "\033[96m"
-        #
-        GRAY241 = "\033[38;5;241m"
-
-    if sys.stdout.encoding is None or sys.stdout.encoding.lower() in ("utf-8", "utf8"):
-        right_arrow = "\u2192"
-        bc = ("╭", "╮", "╰", "╯", "─", "│")
-    else:
-        right_arrow = "->"
-        bc = ("-", "-", "-", "-", "-", "|")
-
-    pip_exe = "pip"
-
-    message = [
-        "Update available {}{}{} {} {}{}{}".format(
-            BashStyle.GRAY241,
-            ".".join(str(k) for k in iv.version),
-            BashStyle.END,
-            right_arrow,
-            BashStyle.GREEN,
-            ".".join(str(k) for k in uv.version),
-            BashStyle.END,
-        )
-    ]
+    # f"Update available {BashStyle.GRAY241}{iv}{BashStyle.END} -> [green]{uv}"
+    message = f"Update available [bright_black]{iv}[/] -> [green]{uv}[/]\n"
 
     if _is_pip_installed(name):
-        message.append(
-            ("Run {}{} install -U {}{} to update").format(
-                BashStyle.DARKCYAN, pip_exe, name, BashStyle.END
-            )
-        )
+        message += f"Run [dark_cyan]pip install -U {name}[/] to update"
     else:
-        message.append(("for package {}").format(name))
+        message += f"for package {name}"
 
-    # wrap in frame
-    padding_tb = 1
-    padding_lr = 3
+    # right-justify
+    message = Text.from_markup(message, justify="center")
 
-    border_color = BashStyle.YELLOW
-
-    # https://stackoverflow.com/a/14693789/353337
-    ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
-    text_width = max(len(ansi_escape.sub("", line)) for line in message)
-
-    out = [
-        border_color
-        + bc[0]
-        + (text_width + 2 * padding_lr) * bc[4]
-        + bc[1]
-        + BashStyle.END
-    ]
-    out += padding_tb * [
-        border_color
-        + bc[5]
-        + (text_width + 2 * padding_lr) * " "
-        + bc[5]
-        + BashStyle.END
-    ]
-
-    for line in message:
-        length = len(ansi_escape.sub("", line))
-        if length < text_width:
-            left = (text_width - length) // 2
-            right = text_width - length - left
-            line = left * " " + line + right * " "
-        out += [
-            border_color
-            + bc[5]
-            + BashStyle.END
-            + padding_lr * " "
-            + line
-            + padding_lr * " "
-            + border_color
-            + bc[5]
-            + BashStyle.END
-        ]
-
-    out += padding_tb * [
-        border_color
-        + bc[5]
-        + (text_width + 2 * padding_lr) * " "
-        + bc[5]
-        + BashStyle.END
-    ]
-    out += [
-        border_color
-        + bc[2]
-        + (text_width + 2 * padding_lr) * bc[4]
-        + bc[3]
-        + BashStyle.END
-    ]
-
-    return "\n".join(out) + "\n"
+    console = Console()
+    console.print(Panel.fit(message, padding=(1, 3), border_style="yellow"))
