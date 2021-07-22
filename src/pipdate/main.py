@@ -12,12 +12,12 @@ from rich.text import Text
 
 _config_dir = Path(appdirs.user_config_dir("pipdate"))
 if not _config_dir.exists():
-    _config_dir.mkdir()
+    _config_dir.mkdir(parents=True)
 _config_file = _config_dir / "config.ini"
 
 _log_dir = Path(appdirs.user_log_dir("pipdate", "Nico Schlömer"))
 if not _log_dir.exists():
-    _log_dir.mkdir()
+    _log_dir.mkdir(parents=True)
 _log_file = _log_dir / "times.log"
 
 
