@@ -4,10 +4,10 @@ import os
 import re
 import sys
 from datetime import datetime
-from distutils.version import LooseVersion
 
 import appdirs
 import pkg_resources
+from packaging import version
 
 _config_dir = appdirs.user_config_dir("pipdate")
 if not os.path.exists(_config_dir):
@@ -98,12 +98,10 @@ def check(name, installed_version):
 
     print(upstream_version)
 
-    iv = LooseVersion(installed_version)
-    uv = LooseVersion(upstream_version)
-    if iv < uv:
-        return _get_message(name, iv, uv)
+    if version.parse(installed_version) >= version.parse(upstream_version):
+        return ""
 
-    return ""
+    return _get_message(name, installed_version, upstream_version)
 
 
 # def _change_in_leftmost_nonzero(a, b):
