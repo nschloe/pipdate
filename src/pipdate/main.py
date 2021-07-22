@@ -1,13 +1,13 @@
 import configparser
 import json
 import os
-import re
-import sys
 from datetime import datetime
 
 import appdirs
 import pkg_resources
 from packaging import version
+from rich.console import Console
+from rich.panel import Panel
 
 _config_dir = appdirs.user_config_dir("pipdate")
 if not os.path.exists(_config_dir):
@@ -93,15 +93,13 @@ def check(name, installed_version):
     try:
         upstream_version = get_pypi_version(name)
     except RuntimeError:
-        return ""
+        return
     _log_time(name, datetime.now())
 
-    print(upstream_version)
-
     if version.parse(installed_version) >= version.parse(upstream_version):
-        return ""
+        return
 
-    return _get_message(name, installed_version, upstream_version)
+    return _print_message(name, installed_version, upstream_version)
 
 
 # def _change_in_leftmost_nonzero(a, b):
@@ -122,7 +120,7 @@ def _is_pip_installed(name):
     return installer.strip() == "pip"
 
 
-def _get_message(name, iv, uv):
+def _print_message(name, iv, uv):
     # Inspired by npm's message
     #
     #   ╭─────────────────────────────────────╮
@@ -132,109 +130,19 @@ def _get_message(name, iv, uv):
     #   │                                     │
     #   ╰─────────────────────────────────────╯
     #
-    class BashStyle:
-        END = "\033[0m"
-        BOLD = "\033[1m"
-        UNDERLINE = "\033[4m"
-        BLACK = "\033[30m"
-        GREEN = "\033[32m"
-        YELLOW = "\033[33m"
-        DARKCYAN = "\033[36m"
-        LIGHTGRAY = "\033[37m"
-        RED = "\033[91m"
-        LIGHTYELLOW = "\033[93m"
-        BLUE = "\033[94m"
-        PURPLE = "\033[95m"
-        CYAN = "\033[96m"
-        #
-        GRAY241 = "\033[38;5;241m"
-
-    if sys.stdout.encoding is None or sys.stdout.encoding.lower() in ("utf-8", "utf8"):
-        right_arrow = "\u2192"
-        bc = ("╭", "╮", "╰", "╯", "─", "│")
-    else:
-        right_arrow = "->"
-        bc = ("-", "-", "-", "-", "-", "|")
-
     pip_exe = "pip"
 
-    message = [
-        "Update available {}{}{} {} {}{}{}".format(
-            BashStyle.GRAY241,
-            iv,
-            BashStyle.END,
-            right_arrow,
-            BashStyle.GREEN,
-            uv,
-            BashStyle.END,
-        )
-    ]
+    # f"Update available {BashStyle.GRAY241}{iv}{BashStyle.END} -> [green]{uv}"
+    message = f"Update available [bright_black]{iv}[/] -> [green]{uv}[/]\n"
 
     if _is_pip_installed(name):
-        message.append(
-            ("Run {}{} install -U {}{} to update").format(
-                BashStyle.DARKCYAN, pip_exe, name, BashStyle.END
-            )
-        )
+        message += f"Run [dark_cyan]{pip_exe} install -U {name}[/] to update"
     else:
-        message.append(("for package {}").format(name))
+        message += f"for package {name}"
 
-    # wrap in frame
-    padding_tb = 1
-    padding_lr = 3
+    # Check <https://github.com/willmcgugan/rich/discussions/1359> for alignment in
+    # panel
+    # message = Text(message, justify="right")
 
-    border_color = BashStyle.YELLOW
-
-    # https://stackoverflow.com/a/14693789/353337
-    ansi_escape = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
-    text_width = max(len(ansi_escape.sub("", line)) for line in message)
-
-    out = [
-        border_color
-        + bc[0]
-        + (text_width + 2 * padding_lr) * bc[4]
-        + bc[1]
-        + BashStyle.END
-    ]
-    out += padding_tb * [
-        border_color
-        + bc[5]
-        + (text_width + 2 * padding_lr) * " "
-        + bc[5]
-        + BashStyle.END
-    ]
-
-    for line in message:
-        length = len(ansi_escape.sub("", line))
-        if length < text_width:
-            left = (text_width - length) // 2
-            right = text_width - length - left
-            line = left * " " + line + right * " "
-        out += [
-            border_color
-            + bc[5]
-            + BashStyle.END
-            + padding_lr * " "
-            + line
-            + padding_lr * " "
-            + border_color
-            + bc[5]
-            + BashStyle.END
-        ]
-
-    out += padding_tb * [
-        border_color
-        + bc[5]
-        + (text_width + 2 * padding_lr) * " "
-        + bc[5]
-        + BashStyle.END
-    ]
-    out += [
-        border_color
-        + bc[2]
-        + (text_width + 2 * padding_lr) * bc[4]
-        + bc[3]
-        + BashStyle.END
-    ]
-
-    return "\n".join(out) + "\n"
+    console = Console()
+    console.print(Panel.fit(message, padding=(1, 3), border_style="yellow"))

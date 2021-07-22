@@ -7,7 +7,6 @@ def test_pipdate():
     pipdate.check("matplotlib", "0.0.0")
     pipdate.check("requests", "0.0.0")
     pipdate.needs_checking("matplotlib")
-    return
 
 
 if __name__ == "__main__":
