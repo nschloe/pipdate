@@ -8,6 +8,7 @@ import pkg_resources
 from packaging import version
 from rich.console import Console
 from rich.panel import Panel
+from rich.text import Text
 
 _config_dir = Path(appdirs.user_config_dir("pipdate"))
 if not _config_dir.exists():
@@ -57,7 +58,6 @@ def _log_time(name, time):
     d[name] = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(_log_file, "w") as handle:
         json.dump(d, handle)
-    return
 
 
 def needs_checking(name):
@@ -102,16 +102,6 @@ def check(name, installed_version):
     return _print_message(name, installed_version, upstream_version)
 
 
-# def _change_in_leftmost_nonzero(a, b):
-#     leftmost_changed = False
-#     for k in range(min(len(a), len(b))):
-#         if a[k] == 0 and b[k] == 0:
-#             continue
-#         leftmost_changed = a[k] != b[k]
-#         break
-#     return leftmost_changed
-
-
 def _is_pip_installed(name):
     try:
         installer = pkg_resources.get_distribution(name).get_metadata("INSTALLER")
@@ -130,19 +120,16 @@ def _print_message(name, iv, uv):
     #   │                                     │
     #   ╰─────────────────────────────────────╯
     #
-    pip_exe = "pip"
-
     # f"Update available {BashStyle.GRAY241}{iv}{BashStyle.END} -> [green]{uv}"
     message = f"Update available [bright_black]{iv}[/] -> [green]{uv}[/]\n"
 
     if _is_pip_installed(name):
-        message += f"Run [dark_cyan]{pip_exe} install -U {name}[/] to update"
+        message += f"Run [dark_cyan]pip install -U {name}[/] to update"
     else:
         message += f"for package {name}"
 
-    # Check <https://github.com/willmcgugan/rich/discussions/1359> for alignment in
-    # panel
-    # message = Text(message, justify="right")
+    # right-justify
+    message = Text.from_markup(message, justify="center")
 
     console = Console()
     console.print(Panel.fit(message, padding=(1, 3), border_style="yellow"))
