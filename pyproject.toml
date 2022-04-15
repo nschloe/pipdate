@@ -1,6 +1,45 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pipdate"
+authors = [{name = "Nico Schlömer", email = "nico.schloemer@gmail.com"}]
+description = "Update all pip-installed packages"
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Utilities",
+]
+dynamic = ["version"]
+requires-python = ">=3.7"
+dependencies = [
+  "appdirs",
+  "packaging",
+  "requests",
+  "rich",
+  # https://github.com/nschloe/pipdate/pull/39
+  "setuptools",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "pipdate.__about__.__version__"}
+
+[project.urls]
+Homepage = "https://github.com/nschloe/pipdate"
+Issues = "https://github.com/nschloe/pipdate/issues"
+
+[project.scripts]
+pipdate = "pipdate.__main__:update"
 
 [tool.isort]
 profile = "black"
