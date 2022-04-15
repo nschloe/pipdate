@@ -39,7 +39,7 @@ Homepage = "https://github.com/nschloe/pipdate"
 Issues = "https://github.com/nschloe/pipdate/issues"
 
 [project.scripts]
-meshio = "pipdate.__main__:update"
+pipdate = "pipdate.__main__:update"
 
 [tool.isort]
 profile = "black"
