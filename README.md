@@ -47,7 +47,7 @@ If you guard the check with
 import pipdate
 
 if pipdate.needs_checking("matplotlib"):
-    print(pipdate.check("matplotlib", "0.4.5"), end="")
+    pipdate.check("matplotlib", "0.4.5")
 ```
 then it will be performed at most every _k_ seconds, where _k_ is specified
 in the config file `$HOME/.config/pipdate/config.ini`, e.g., once a day
